@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting on merge
+name: Deploy to Firebase Hosting
 on:
   push:
     branches:
@@ -14,15 +14,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install
-        working-directory: ./
+        run: npm ci
 
       - name: Build project
         run: npm run build
-        working-directory: ./
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
