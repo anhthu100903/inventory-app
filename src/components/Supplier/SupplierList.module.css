@@ -1,0 +1,99 @@
+/* src/components/Supplier/SupplierList.module.css */
+.supplierList {
+  list-style: none;
+  padding: 0;
+  display: flex; /* Dùng Flexbox để dễ quản lý */
+  flex-direction: column;
+  gap: 10px; /* Khoảng cách giữa các thẻ/mục */
+}
+
+.supplierItem {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.supplierName {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #333;
+  display: block; /* Đảm bảo tên hiển thị hết 1 dòng */
+  margin-bottom: 5px;
+}
+
+.supplierInfo {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.supplierDetail {
+  margin-bottom: 5px;
+}
+
+.actionButtons {
+  margin-top: 10px;
+}
+
+.actionButtons button {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 8px;
+  background-color: #f0f0f0;
+  transition: background-color 0.2s;
+}
+
+.actionButtons button:hover {
+  background-color: #e0e0e0;
+}
+
+/* ---------------------------------------------------- */
+/* MEDIA QUERY: Màn hình lớn (Desktop View) */
+/* Hiển thị tóm tắt hơn trên 1 dòng */
+/* ---------------------------------------------------- */
+@media (min-width: 768px) {
+  .supplierItem {
+    display: grid;
+    grid-template-columns: 1.5fr 3.5fr 1fr;
+    align-items: center;
+    padding: 10px 15px;
+  }
+
+  .supplierHeader {
+    /* Trên desktop, chúng ta không cần header riêng trong item */
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    display: block; /* Để tên hiển thị độc lập */
+  }
+
+  .supplierName {
+    font-size: 1rem; /* Kích thước nhỏ hơn để vừa một cột */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .supplierInfo {
+    display: flex; /* Dùng flexbox cho các chi tiết ngang hàng */
+    justify-content: space-around; /* Căn đều khoảng trống */
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa các chi tiết */
+  }
+
+  .supplierDetail {
+    /* Đảm bảo các chi tiết hiển thị inline */
+    display: inline-block;
+    font-size: 0.85rem; /* Kích thước nhỏ hơn */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Giới hạn để không bị tràn quá nhiều */
+  }
+
+  .actionButtons {
+    justify-content: flex-end;
+  }
+}

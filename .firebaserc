@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "inventory-system-b67c2"
+  },
+  "targets": {
+    "inventory-system-b67c2": {
+      "hosting": {
+        "diennuoccatvi": [
+          "diennuoccatvi"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

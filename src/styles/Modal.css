@@ -1,0 +1,110 @@
+/* src/styles/Modal.css - Modern, responsive modal */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Mờ nhẹ hơn, không tối quá */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: overlay-fade-in 0.2s ease-out;
+}
+
+@keyframes overlay-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 16px; /* Bo góc mềm mại hơn */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Shadow sâu, hiện đại */
+  max-width: 90vw; /* Viewport-based cho mobile */
+  max-height: 90vh;
+  overflow-y: auto;
+  width: 480px; /* Rộng hơn một chút cho form */
+  transform: translateY(20px); /* Bắt đầu từ dưới */
+  animation: modal-slide-up 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Slide-up mượt */
+  padding: 0; /* Padding ở header/body/footer */
+}
+
+@keyframes modal-slide-up {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Mobile: Full width */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95vw;
+    border-radius: 12px; /* Bo ít hơn trên mobile */
+    max-height: 95vh;
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px; /* Padding đều, top lớn hơn */
+  border-bottom: 1px solid #f0f0f0; /* Border nhẹ */
+  border-radius: 16px 16px 0 0; /* Bo góc top */
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.5rem; /* Lớn hơn, bold */
+  font-weight: 600;
+  color: #1e293b; /* Màu title nhất quán */
+}
+
+.close-btn {
+  background: none;
+  border: none;width: 40px; /* To hơn cho icon */
+  height: 40px;
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #e21010;line-height: 1;
+}
+
+.close-btn:hover {
+  background: #e21010; /* Hover nhẹ */
+  color: #e5e6e9;
+  transform: scale(1.05);
+}
+
+.modal-body {
+  padding: 0 24px 24px; /* Padding đều */
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 16px 24px 24px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-radius: 0 0 16px 16px; /* Bo góc bottom */
+}
+
+/* Mobile: Icon to hơn để dễ tap */
+@media (max-width: 480px) {
+  .close-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .close-btn svg {
+    width: 22px;
+    height: 22px;
+  }
+}

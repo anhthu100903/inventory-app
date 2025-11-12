@@ -1,0 +1,40 @@
+/* ---------------------------------------------------- */
+/* HEADER (MOBILE) */
+/* ---------------------------------------------------- */
+.header-mobile {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #f8f9fa; /* Màu nền nhẹ */
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Cố định trên cùng */
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 60px; /* Chiều cao cố định */
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  color: #333;
+  padding-right: 1rem;
+}
+
+.header-title {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ---------------------------------------------------- */
+/* MEDIA QUERY: Màn hình lớn hơn 768px (Desktop) */
+/* ---------------------------------------------------- */
+@media (min-width: 768px) {
+  /* Ẩn Header trên Desktop vì Sidebar đã đảm nhận vai trò Menu */
+  .header-mobile {
+    display: none;
+  }
+}

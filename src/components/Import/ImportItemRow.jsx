@@ -34,7 +34,7 @@ export default function ImportItemRow({
                 <li
                   key={p.id}
                   onClick={() => onSelectProduct(index, p)}
-                  className="px-2 py-1 hover:bg-gray-200 cursor-pointer text-sm"
+                  className="px-2 py-1 hover:bg-gray-200 text-sm"
                 >
                   {p.name} — {p.unit} ({p.importPrice?.toLocaleString()}₫)
                 </li>

@@ -1,0 +1,174 @@
+/* src/pages/Suppliers.module.css */
+
+/* Container chính của page - Specific cho Suppliers */
+.suppliersPageContainer {
+  max-width: 100%;
+  padding: 0; /* Loại bỏ padding hoàn toàn trên mobile để full width cho list */
+  margin: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* Title h1 - Specific cho Suppliers */
+.suppliersPageTitle {
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Container chứa thanh tìm kiếm và nút thêm - Specific cho Suppliers, Mobile-first */
+.suppliersControlsFixed {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  min-width: 100%;
+}
+
+/* Style specific cho SearchInput - Chiếm full width hơn */
+.suppliersSearchInput {
+  flex: 1;
+  min-width: 0;
+  width: 100%; /* Full width explicit */
+  box-sizing: border-box; /* Bao gồm border/padding trong width */
+  padding: 0.75rem; /* Padding nội tại của input */
+  border: 1px solid #e2e8f0; /* Nếu cần, thêm border cho đẹp */
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Nút Icon Thêm Mới - Specific cho Suppliers, Full width trên mobile */
+.suppliersAddIconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    #004b9b,
+    #007acc
+  ); /* Gradient cho nổi bật */
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Hiệu ứng mượt */
+  box-shadow: 0 4px 12px rgba(0, 75, 155, 0.3);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.suppliersAddIconBtn:hover {
+  background: linear-gradient(135deg, #00397a, #005fa3);
+  transform: translateY(-2px); /* Nâng lên nhẹ */
+  box-shadow: 0 6px 16px rgba(0, 75, 155, 0.4);
+}
+
+.suppliersAddIconBtn:active {
+  transform: translateY(0);
+}
+
+/* Icon trong nút - Scale theo màn hình */
+.suppliersAddIconBtn svg {
+  font-size: 1.5rem; /* Lớn hơn trên mobile */
+}
+
+.addIcon {
+  display: block; /* Mặc định hiển thị (mobile-first) */
+}
+
+/* Text riêng: Ẩn trên mobile, hiển thị trên desktop */
+.addText {
+  display: none; /* Ẩn mặc định trên mobile */
+  font-size: 1rem;
+}
+
+/* Container cho SupplierList - Full width, không trống */
+.suppliersListContainer {
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------- */
+/* MEDIA QUERY: Tablet/Desktop (≥768px) */
+/* ---------------------------------------------------- */
+@media (min-width: 768px) {
+  .suppliersPageContainer {
+    padding: 1rem; /* Padding nhẹ trên desktop để không sát quá */
+  }
+
+  .suppliersPageTitle {
+    font-size: 2.25rem; /* Lớn hơn */
+    text-align: left; /* Align left trên desktop */
+    padding: 0 1rem;
+    margin: 1rem 0 3rem 0;
+  }
+
+  .suppliersControlsFixed {
+    flex-direction: row; /* Ngang trên desktop */
+    gap: 1rem;
+    border-radius: 12px; /* Bo góc lại trên desktop */
+    position: sticky;
+    top: 0;
+    right: 0;
+    width: 100%; /* Full width trong grid */
+  }
+
+  .suppliersSearchInput {
+    width: auto; /* Flex grow để rộng hơn trên desktop */
+    flex: 1;
+    padding: 0.875rem;
+  }
+
+  .suppliersAddIconBtn {
+    white-space: nowrap; /* Không wrap text nếu có */
+    width: auto; /* Không full width trên desktop */
+  }
+
+  .suppliersAddIconBtn svg {
+    font-size: 1.25rem;
+  }
+
+  .suppliersListContainer {
+    width: 100%;
+  }
+
+  .addIcon {
+    display: none; /* Ẩn icon trên desktop */
+  }
+
+  .addText {
+    display: inline; /* Hiển thị text trên desktop */
+  }
+}
+
+/* Media query cho màn hình rất nhỏ (extra mobile) */
+@media (max-width: 480px) {
+  .suppliersPageContainer {
+    padding: 0;
+  }
+
+  .suppliersControlsFixed {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .suppliersSearchInput {
+    padding: 0.625rem;
+  }
+
+  .suppliersAddIconBtn {
+    padding: 0.625rem 0.625rem;
+  }
+
+  .suppliersAddIconBtn svg {
+    font-size: 1.125rem;
+  }
+
+  .suppliersListContainer {
+    padding: 0 0.25rem; /* Rất nhẹ cho extra small */
+  }
+}

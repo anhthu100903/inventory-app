@@ -58,7 +58,7 @@ export default function SupplierSelect({ onSelect }) {
                 setSearch(s.name);
                 setFiltered([]);
               }}
-              className="p-2 hover:bg-blue-50 cursor-pointer"
+              className="p-2 hover:bg-blue-50"
             >
               {s.name}
             </li>

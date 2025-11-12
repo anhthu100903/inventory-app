@@ -1,37 +1,98 @@
+// src/components/Supplier/SupplierForm.jsx
+import React from 'react';
+import styles from './SupplierForm.module.css';
+
 function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
   return (
-    <form
-      onSubmit={onSubmit}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-        maxWidth: "350px",
-        marginBottom: "1.5rem",
-      }}
-    >
-      <input name="name" placeholder="Tên" value={form.name} onChange={onChange} />
-      <input name="email" placeholder="Email" value={form.email} onChange={onChange} />
-      <input name="phone" placeholder="Số điện thoại" value={form.phone} onChange={onChange} />
-      <input name="address" placeholder="Địa chỉ" value={form.address} onChange={onChange} />
-      <textarea name="note" placeholder="Ghi chú" value={form.note} onChange={onChange} />
+    <form onSubmit={onSubmit} className={styles.supplierForm}>
+      {/* Field: Tên */}
+      <div className={styles.formGroup}>
+        <label htmlFor="name" className={styles.formLabel}>Tên nhà cung cấp *</label>
+        <input 
+          id="name"
+          name="name" 
+          placeholder="Nhập tên nhà cung cấp" 
+          value={form.name} 
+          onChange={onChange} 
+          required 
+          className={styles.formInput}
+        />
+      </div>
 
-      <button
-        type="submit"
-        style={{
-          background: editingId ? "#2196F3" : "#4CAF50",
-          color: "#fff",
-          padding: "8px",
-        }}
-      >
-        {editingId ? "💾 Cập nhật" : "➕ Thêm"}
-      </button>
+      {/* Field: Email */}
+      <div className={styles.formGroup}>
+        <label htmlFor="email" className={styles.formLabel}>Email</label>
+        <input 
+          id="email"
+          name="email" 
+          type="email"
+          placeholder="Nhập email" 
+          value={form.email} 
+          onChange={onChange} 
+          className={styles.formInput}
+        />
+      </div>
 
-      {editingId && (
-        <button type="button" onClick={onCancel}>
+      {/* Field: Số điện thoại */}
+      <div className={styles.formGroup}>
+        <label htmlFor="phone" className={styles.formLabel}>Số điện thoại</label>
+        <input 
+          id="phone"
+          name="phone" 
+          type="tel"
+          placeholder="Nhập số điện thoại" 
+          value={form.phone} 
+          onChange={onChange} 
+          className={styles.formInput}
+        />
+      </div>
+
+      {/* Field: Địa chỉ */}
+      <div className={styles.formGroup}>
+        <label htmlFor="address" className={styles.formLabel}>Địa chỉ</label>
+        <input 
+          id="address"
+          name="address" 
+          placeholder="Nhập địa chỉ" 
+          value={form.address} 
+          onChange={onChange} 
+          className={styles.formInput}
+        />
+      </div>
+
+      {/* Field: Ghi chú */}
+      <div className={styles.formGroup}>
+        <label htmlFor="note" className={styles.formLabel}>Ghi chú</label>
+        <textarea 
+          id="note"
+          name="note" 
+          placeholder="Nhập ghi chú..." 
+          value={form.note} 
+          onChange={onChange} 
+          rows={3}
+          className={styles.formTextarea}
+        />
+      </div>
+
+      {/* Buttons - Di chuyển vào footer modal nếu muốn, nhưng giữ trong form */}
+      <div className={styles.formActions}>
+        <button
+          type="button"
+          onClick={onCancel}
+          className={styles.cancelButton}
+          disabled={!editingId} // Ẩn nếu không edit
+          style={{ display: editingId ? 'block' : 'none' }}
+        >
           ❌ Hủy
         </button>
-      )}
+        <button
+          type="submit"
+          className={`${styles.actionButton} ${editingId ? styles.updateButton : styles.addButton}`}
+          disabled={!form.name} // Disable nếu thiếu tên
+        >
+          {editingId ? "💾 Cập nhật" : "➕ Thêm"}
+        </button>
+      </div>
     </form>
   );
 }

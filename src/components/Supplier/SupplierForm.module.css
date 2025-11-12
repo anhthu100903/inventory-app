@@ -1,0 +1,115 @@
+/* src/components/Supplier/SupplierForm.module.css - Clean, modern form */
+
+.supplierForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Spacing đều giữa fields */
+  padding: 0; /* Không padding ngoài, dùng trong modal */
+  max-width: 100%; /* Full width trong modal */
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Gap nhỏ giữa label và input */
+}
+
+.formLabel {
+  font-size: 0.875rem; /* Nhỏ gọn */
+  font-weight: 500;
+  color: #374151; /* Xám đậm */
+  margin: 0;
+}
+
+.formInput,
+.formTextarea {
+  padding: 12px 16px; /* Padding thoải mái */
+  border: 1px solid #d1d5db; /* Border nhẹ */
+  border-radius: 8px; /* Bo góc nhất quán */
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background: #fafafa; /* Nền nhẹ cho nổi bật */
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: #3b82f6; /* Xanh focus */
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); /* Ring focus */
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 80px; /* Height min cho ghi chú */
+}
+
+/* Actions - Flex end, gap */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0; /* Phân cách */
+}
+
+.actionButton {
+  padding: 12px 24px; /* Padding rộng hơn */
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 100px; /* Min width cho cân đối */
+}
+
+.actionButton:hover:not(:disabled) {
+  transform: translateY(-1px); /* Nâng nhẹ */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.addButton {
+  background: linear-gradient(135deg, #10b981, #059669); /* Gradient xanh lá đẹp */
+}
+
+.updateButton {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8); /* Gradient xanh dương match app */
+}
+
+.cancelButton {
+  background: #f3f4f6; /* Xám nhạt */
+  color: #6b7280;
+  border: 1px solid #d1d5db;
+  min-width: 80px;
+}
+
+.cancelButton:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Mobile tweaks */
+@media (max-width: 480px) {
+  .formInput,
+  .formTextarea {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .actionButton {
+    padding: 10px 20px;
+    flex: 1; /* Full width nếu cần trên mobile nhỏ */
+    min-width: unset;
+  }
+
+  .formActions {
+    flex-direction: column; /* Stack buttons trên mobile */
+  }
+}
