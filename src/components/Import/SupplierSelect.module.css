@@ -276,19 +276,4 @@
     top: 50%; /* căn theo chiều dọc */
     transform: translateY(-50%); /* kéo lên đúng giữa */
   }
-
-  .searchForm {
-    position: absolute; /* thay fixed -> absolute */
-    top: 100%;          /* ngay dưới combinedInput */
-    left: 0;
-    right: 0;
-    width: 100%;        /* chiếm toàn bộ width container */
-    max-height: 60vh;
-    box-sizing: border-box;
-    padding: 1rem;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    z-index: 20;
-    overflow-y: auto;
-  }
 }
