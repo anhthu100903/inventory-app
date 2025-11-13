@@ -1,0 +1,310 @@
+/* Imports.module.css - Modern, card-based design */
+
+.importsPageContainer {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  background: #f8fafc; /* Nền nhẹ cho thân thiện */
+  box-sizing: border-box;
+}
+
+.importsPageTitle {
+  text-align: center;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 1.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0 1rem;
+}
+
+.importsControls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  margin: 0 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.filterItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.filterIcon {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.filterLabel {
+  font-weight: 500;
+  color: #374151;
+  min-width: 60px; /* Align labels */
+}
+
+.filterInput {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.filterInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.importsAddBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  width: 100%; /* Full width mobile */
+}
+
+.importsAddBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+}
+
+.importsAddBtn:disabled {
+  opacity: 0.7;
+}
+
+.importsList {
+  padding: 1rem;
+  flex: 1;
+}
+
+.loadingState, .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.emptyIcon {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.emptyState h3 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+}
+
+.emptyAddBtn {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.emptyAddBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.importCard {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.2s ease;
+  border-left: 4px solid #3b82f6;
+}
+
+.importCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dateBadge {
+  background: #eff6ff;
+  color: #3b82f6;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.cardActions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.actionBtn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  color: #64748b;
+}
+
+.actionBtn:hover {
+  background: #f1f5f9;
+  color: #3b82f6;
+}
+
+.cardBody {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.supplierInfo, .amountInfo, .noteInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.amountInfo strong {
+  color: #059669;
+  font-size: 1.125rem;
+}
+
+.itemsBadge {
+  align-self: flex-end;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .importsPageContainer {
+    padding: 1.5rem;
+  }
+
+  .importsPageTitle {
+    font-size: 2.5rem;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .importsControls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .filterGroup {
+    flex-direction: row;
+    flex: 1;
+    gap: 2rem;
+  }
+
+  .filterItem {
+    flex: 1;
+  }
+
+  .importsAddBtn {
+    width: auto;
+    order: 3; /* Push button right */
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .importsControls {
+    padding: 0.75rem;
+    margin: 0 0.5rem;
+  }
+
+  .filterGroup {
+    gap: 0.5rem;
+  }
+
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .importCard {
+    border-left-width: 3px;
+  }
+}

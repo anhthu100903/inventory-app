@@ -25,6 +25,7 @@
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Shadow sâu, hiện đại */
   max-width: 90vw; /* Viewport-based cho mobile */
   max-height: 90vh;
+  width: 600px;
   overflow-y: auto;
   width: 480px; /* Rộng hơn một chút cho form */
   transform: translateY(20px); /* Bắt đầu từ dưới */
@@ -72,7 +73,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   color: #e21010;line-height: 1;
 }
 

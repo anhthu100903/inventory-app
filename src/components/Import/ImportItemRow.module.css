@@ -1,0 +1,256 @@
+/* ImportItemRow.module.css - Compact, responsive row with icons & validation */
+
+.itemRowCard {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 0.5fr; /* Product | Fields | Delete */
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-items: start; /* Align top cho fields */
+}
+
+.itemRowCard:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.productSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.rowLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.labelIcon {
+  color: #64748b;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.required {
+  color: #ef4444;
+  font-size: 0.75rem;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 12px 12px 40px; /* Space for search icon */
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: white;
+}
+
+.errorInput {
+  border-color: #ef4444 !important;
+  background: #fef2f2 !important;
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cols desktop */
+  gap: 1rem;
+  align-items: end;
+}
+
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.numberInput, .textInput {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #fafafa;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.numberInput:focus, .textInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  background: white;
+}
+
+.rowActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.deleteBtn:hover {
+  background: #fecaca;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 38, 38, 0.2);
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  margin-top: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdownItem {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f9fafb;
+  transition: background 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdownItem:hover {
+  background: #f8fafc;
+}
+
+.itemName {
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 2px;
+  font-size: 0.95rem;
+}
+
+.itemDetails {
+  font-size: 0.8rem;
+  color: #6b7280;
+  display: flex;
+  justify-content: space-between;
+}
+
+.unit {
+  font-weight: 500;
+}
+
+.price {
+  color: #059669;
+}
+
+.loading {
+  text-align: center;
+  padding: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #f3f4f6;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 0.5rem;
+  display: block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorMsg {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  background: #fef2f2;
+  border-radius: 4px;
+  border-left: 3px solid #ef4444;
+}
+
+/* Mobile: Stack everything */
+@media (max-width: 768px) {
+  .itemRowCard {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .fieldsGrid {
+    grid-template-columns: 1fr 1fr; /* Giữ 2 cols nếu fit, hoặc 1fr cho extra small */
+  }
+
+  .deleteBtn {
+    align-self: flex-end;
+    padding: 0.75rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (max-width: 480px) {
+    .fieldsGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .searchInput, .numberInput, .textInput {
+      padding: 10px 10px 10px 36px;
+      font-size: 0.9rem;
+    }
+  }
+}

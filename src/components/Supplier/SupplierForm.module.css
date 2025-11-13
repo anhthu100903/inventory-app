@@ -60,7 +60,6 @@
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 600;
-  cursor: pointer;
   transition: all 0.2s ease;
   min-width: 100px; /* Min width cho cân đối */
 }
@@ -72,7 +71,6 @@
 
 .actionButton:disabled {
   opacity: 0.6;
-  cursor: not-allowed;
 }
 
 .addButton {

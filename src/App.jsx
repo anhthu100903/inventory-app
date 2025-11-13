@@ -5,7 +5,7 @@ import Suppliers from "./pages/Supplier/Suppliers";
 import Products from "./pages/Products";
 import Sales from "./pages/Sales";
 import Dashboard from "./pages/Dashboard";
-import Imports from "./pages/Imports";
+import Imports from "./pages/Import.jsx/Imports";
 
 function App() {
   return (

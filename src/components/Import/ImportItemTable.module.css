@@ -1,0 +1,106 @@
+/* ImportItemTable.module.css - Add borders/separators */
+
+.itemsTableContainer {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.headerIcon {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.itemsList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.rowSeparator {
+  position: relative;
+  border-bottom: 1px solid #f0f0f0; /* Border phân tách giữa rows */
+  margin-bottom: 0;
+}
+
+.rowSeparator:last-child {
+  border-bottom: none; /* Không border cho row cuối */
+}
+
+.rowSeparator:hover {
+  border-bottom-color: #e2e8f0;
+}
+
+.addItemBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 0.875rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin: 1rem;
+}
+
+.addItemBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.addItemBtn:disabled {
+  opacity: 0.6;
+}
+
+.addIcon {
+  flex-shrink: 0;
+}
+
+.addText {
+  white-space: nowrap;
+}
+
+.errorMsg {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-left: auto;
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .tableHeader {
+    padding: 1rem 1.25rem;
+  }
+
+  .itemsList {
+    padding: 0 1rem;
+  }
+
+  .addItemBtn {
+    margin: 0.75rem 1rem;
+    padding: 0.75rem 1rem;
+  }
+}

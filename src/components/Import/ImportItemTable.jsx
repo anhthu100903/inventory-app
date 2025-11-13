@@ -1,53 +1,51 @@
+// components/Import/ImportItemTable.jsx - Add borders between rows
+import React from "react";
 import ImportItemRow from "./ImportItemRow";
+import { MdPlaylistAddCheck, MdAdd } from "react-icons/md";
 import { findProductsByName } from "../../services/productService";
-import { useState } from "react";
+import styles from "./ImportItemTable.module.css";
 
-export default function ImportItemTable({ fields, register, append, remove, setValue }) {
-  const [searchResults, setSearchResults] = useState({});
-  const [loadingIndex, setLoadingIndex] = useState(null);
+export default function ImportItemTable({ fields, register, append, remove, setValue, errors, className = "" }) {
+  const [searchResults, setSearchResults] = React.useState({});
+  const [loadingIndex, setLoadingIndex] = React.useState(null);
 
-  // Hàm tìm sản phẩm khi nhập tên
   const handleSearchProduct = async (index, name) => {
     if (!name || name.length < 2) {
       setSearchResults((prev) => ({ ...prev, [index]: [] }));
       return;
     }
     setLoadingIndex(index);
-    const products = await findProductsByName(name);
-    setSearchResults((prev) => ({ ...prev, [index]: products }));
-    setLoadingIndex(null);
+    try {
+      const products = await findProductsByName(name);
+      setSearchResults((prev) => ({ ...prev, [index]: products }));
+    } catch (error) {
+      console.error("Search error:", error);
+    } finally {
+      setLoadingIndex(null);
+    }
   };
 
-  // Khi chọn sản phẩm có sẵn
   const handleSelectProduct = (index, product) => {
     setValue(`items.${index}.productId`, product.id);
     setValue(`items.${index}.productName`, product.name);
     setValue(`items.${index}.importPrice`, product.importPrice || 0);
     setValue(`items.${index}.profitPercent`, product.profitPercent || 10);
     setValue(`items.${index}.unit`, product.unit || "Cái");
-    setSearchResults((prev) => ({ ...prev, [index]: [] })); // ẩn danh sách gợi ý
+    setSearchResults((prev) => ({ ...prev, [index]: [] }));
   };
 
-
   return (
-    <div className="mt-4">
-      <h4 className="text-lg font-medium mb-2">Danh sách sản phẩm nhập</h4>
+    <div className={`${styles.itemsTableContainer} ${className}`}>
+      <div className={styles.tableHeader}>
+        <MdPlaylistAddCheck className={styles.headerIcon} />
+        <h4 className={styles.headerTitle}>Danh sách sản phẩm nhập</h4>
+        {errors && errors.type === "required" && <p className={styles.errorMsg}>Ít nhất 1 sản phẩm</p>}
+      </div>
 
-      <table className="table-auto w-full border border-gray-300">
-        <thead className="bg-gray-100">
-          <tr>
-            <th className="border px-2 py-1">Tên sản phẩm</th>
-            <th className="border px-2 py-1">Số lượng</th>
-            <th className="border px-2 py-1">Giá nhập</th>
-            <th className="border px-2 py-1">% Lợi nhuận</th>
-            <th className="border px-2 py-1">Đơn vị</th>
-            <th className="border px-2 py-1"></th>
-          </tr>
-        </thead>
-        <tbody>
-          {fields.map((field, index) => (
+      <div className={styles.itemsList}>
+        {fields.map((field, index) => (
+          <div key={field.id} className={styles.rowSeparator}>
             <ImportItemRow
-              key={field.id}
               index={index}
               register={register}
               remove={remove}
@@ -55,10 +53,11 @@ export default function ImportItemTable({ fields, register, append, remove, setV
               searchResults={searchResults[index] || []}
               onSelectProduct={handleSelectProduct}
               loading={loadingIndex === index}
+              errors={errors?.[index] || {}} // Pass per-row errors
             />
-          ))}
-        </tbody>
-      </table>
+          </div>
+        ))}
+      </div>
 
       <button
         type="button"
@@ -71,9 +70,11 @@ export default function ImportItemTable({ fields, register, append, remove, setV
             unit: "Cái",
           })
         }
-        className="mt-2 px-3 py-1 bg-green-500 text-white rounded"
+        className={styles.addItemBtn}
+        disabled={loadingIndex !== null}
       >
-        ➕ Thêm sản phẩm
+        <MdAdd size={20} className={styles.addIcon} />
+        <span className={styles.addText}>Thêm sản phẩm mới</span>
       </button>
     </div>
   );

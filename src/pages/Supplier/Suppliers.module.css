@@ -52,7 +52,6 @@
   border: none;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  cursor: pointer;
   transition: all 0.3s ease; /* Hiệu ứng mượt */
   box-shadow: 0 4px 12px rgba(0, 75, 155, 0.3);
   font-size: 1rem;
