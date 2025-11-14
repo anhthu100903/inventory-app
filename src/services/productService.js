@@ -79,3 +79,38 @@ export const increaseStock = async (productId, quantity, importPrice) => {
 
   return { totalInStock: newStock, averageImportPrice: newAvgPrice, sellingPrice: newSellingPrice };
 };
+
+// Cập nhật sản phẩm
+export const updateProduct = async (id, productData) => {
+  const docRef = doc(db, PRODUCTS_COLLECTION, id);
+  const data = productData instanceof Product ? productData.toFirestore() : productData;
+  await updateDoc(docRef, { ...data, updatedAt: new Date() });
+};
+
+// Xóa sản phẩm (soft delete)
+export const deleteProduct = async (id) => {
+  const docRef = doc(db, PRODUCTS_COLLECTION, id);
+  await updateDoc(docRef, { isDeleted: true, updatedAt: new Date() });
+};
+
+// Lấy danh sách sản phẩm theo phân loại
+export const getProductsByCategory = async (category) => {
+  if (!category) {
+    const snap = await getDocs(query(productsCollectionRef, where("isDeleted", "!=", true)));
+    return snap.docs.map(d => Product.fromFirestore(d.id, d.data()));
+  }
+  const q = query(productsCollectionRef, where("category", "==", category), where("isDeleted", "!=", true));
+  const snap = await getDocs(q);
+  return snap.docs.map(d => Product.fromFirestore(d.id, d.data()));
+};
+
+// Lấy danh sách tất cả phân loại (unique)
+export const getAllCategories = async () => {
+  const snap = await getDocs(productsCollectionRef);
+  const categories = new Set();
+  snap.docs.forEach(doc => {
+    const data = doc.data();
+    if (data.category && !data.isDeleted) categories.add(data.category);
+  });
+  return Array.from(categories).sort();
+};

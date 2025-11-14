@@ -1,0 +1,302 @@
+.productList {
+  padding: 1rem;
+}
+
+.noData {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ddd;
+  padding: 0.75rem 0.5rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+}
+
+.table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.nameCell {
+  font-weight: 500;
+  color: #007bff;
+}
+
+.badge {
+  display: inline-block;
+  background-color: #e7f3ff;
+  color: #0066cc;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.actionCell {
+  white-space: nowrap;
+  position: relative;
+  text-align: center;
+}
+
+.actionButton {
+  font-size: 1.1rem;
+  margin: 0 2px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+.actionButton:hover {
+  background-color: #f0f0f0;
+}
+
+.viewButton {
+  color: #007bff;
+}
+
+.editButton {
+  color: #ffc107;
+}
+
+.deleteButton {
+  color: #dc3545;
+}
+
+.moreButton {
+  display: none;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 4px;
+  color: #6c757d;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 99999;
+  min-width: 140px;
+  padding: 4px 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.dropdownItem:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.viewItem {
+  color: #007bff;
+}
+
+.editItem {
+  color: #ffc107;
+}
+
+.deleteItem {
+  color: #dc3545;
+}
+
+.detailModal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.detailHighlight {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef7 100%);
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.highlightItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.highlightLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.highlightValue {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #007bff;
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.detailLabel {
+  font-weight: 600;
+  color: #666;
+  min-width: 100px;
+  font-size: 0.9rem;
+}
+
+.detailValue {
+  color: #333;
+  text-align: right;
+  font-size: 0.9rem;
+}
+@media screen and (min-width: 768px) {
+  .moreButton {
+    display: none;
+  }
+
+  .actionButton {
+    display: inline-block;
+  }
+
+  .hideOnMobile {
+    display: table-cell;
+  }
+
+  .hideOnTablet {
+    display: table-cell;
+  }
+}
+
+/* Tablet: ẩn một số cột */
+@media screen and (max-width: 767px) and (min-width: 577px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .hideOnTablet {
+    display: none;
+  }
+
+  .moreButton {
+    display: block;
+  }
+
+  .actionButton {
+    display: none;
+  }
+
+  .table {
+    min-width: auto;
+    font-size: 0.8rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.4rem 0.3rem;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 576px) {
+  .hideOnMobile {
+    display: none;
+  }
+
+  .hideOnTablet {
+    display: none;
+  }
+
+  .moreButton {
+    display: block;
+  }
+
+  .actionButton {
+    display: none;
+  }
+
+  .table {
+    min-width: auto;
+    font-size: 0.7rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.3rem 0.2rem;
+  }
+
+  .nameCell {
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

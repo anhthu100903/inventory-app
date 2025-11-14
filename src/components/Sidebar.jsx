@@ -2,13 +2,14 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/Sidebar.css'; 
-import { MdDashboard, MdInventory, MdPeople, MdAddShoppingCart, MdCallMade, MdChevronLeft } from 'react-icons/md'; 
+import { MdDashboard, MdInventory, MdPeople, MdAddShoppingCart, MdCallMade, MdChevronLeft, MdCategory } from 'react-icons/md'; 
 
 // Cần cài đặt react-icons nếu chưa có: npm install react-icons
 
 const navItems = [
   { path: '/', label: 'Tổng quan', icon: MdDashboard },
   { path: '/products', label: 'Quản lý Sản phẩm', icon: MdInventory },
+  { path: '/categories', label: 'Phân loại Sản phẩm', icon: MdCategory },
   { path: '/imports', label: 'Phiếu nhập kho', icon: MdAddShoppingCart },
   { path: '/sales', label: 'Phiếu xuất/Bán hàng', icon: MdCallMade },
   { path: '/suppliers', label: 'Quản lý NCC', icon: MdPeople },

@@ -129,6 +129,31 @@ export default function ImportItemRow({
           />
           {errors.unit && <p className={styles.errorMsg}>{errors.unit.message}</p>}
         </div>
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
+            🏷️ Phân loại (nếu sản phẩm mới)
+          </label>
+          <input 
+            type="text" 
+            {...register(`items.${index}.category`)} 
+            className={`${styles.textInput} ${errors.category ? styles.errorInput : ""}`}
+            placeholder="Không có nếu sản phẩm đã tồn tại"
+          />
+          {errors.category && <p className={styles.errorMsg}>{errors.category.message}</p>}
+        </div>
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
+            📝 Ghi chú
+          </label>
+          <input 
+            type="text" 
+            {...register(`items.${index}.notes`)} 
+            className={`${styles.textInput} ${errors.notes ? styles.errorInput : ""}`}
+            placeholder="Ghi chú về sản phẩm (tùy chọn)"
+            maxLength="100"
+          />
+          {errors.notes && <p className={styles.errorMsg}>{errors.notes.message}</p>}
+        </div>
       </div>
 
       {/* Delete */}

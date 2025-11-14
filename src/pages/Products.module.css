@@ -1,0 +1,152 @@
+.productsPage {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.productsPage h1 {
+  margin: 0;
+  color: #333;
+  font-size: 1.8rem;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filterSection {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  min-width: 300px;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #fff;
+  min-width: 200px;
+}
+
+.searchIcon {
+  color: #999;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.categorySelect {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  cursor: pointer;
+  min-width: 150px;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.addBtn:hover {
+  background-color: #218838;
+}
+
+.loading {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Tablet */
+@media screen and (max-width: 767px) {
+  .productsPage {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+
+  .productsPage h1 {
+    font-size: 1.4rem;
+  }
+
+  .toolbar {
+    flex-direction: column;
+  }
+
+  .filterSection {
+    flex-direction: column;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .searchBox {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .categorySelect {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 576px) {
+  .productsPage {
+    padding: 0.5rem;
+  }
+
+  .productsPage h1 {
+    font-size: 1.2rem;
+  }
+
+  .searchBox {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .categorySelect {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .addBtn {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
