@@ -1,12 +1,24 @@
-// Imports.jsx
-import React, { useState, useEffect } from "react";
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
-import { MdAdd, MdEdit, MdDelete, MdSearch, MdFilterList, MdCalendarToday, MdBusiness, MdNote, MdAttachMoney } from "react-icons/md";
-import { format, parseISO } from "date-fns";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import {
+  getImports,
+  addImportRecord,
+  deleteImportRecord,
+  updateImportRecord,
+} from "../../services/importService";
+import { MdAdd, MdEdit, MdDelete, MdAttachMoney } from "react-icons/md";
+import { format } from "date-fns";
 import Modal from "../../components/Modal";
-import ImportForm from "../../components/Import/ImportForm"; // Giả sử bạn có form riêng
-import styles from './Imports.module.css';
+import ImportForm from "../../components/Import/ImportForm/ImportForm";
+import styles from "./Imports.module.css";
+import ImportList from "../../components/Import/ImportList/ImportList";
+
+const getDateValue = (dateValue) => {
+  if (!dateValue) return null;
+  if (dateValue instanceof Date) return dateValue;
+  if (dateValue.toDate && typeof dateValue.toDate === "function")
+    return dateValue.toDate();
+  return null;
+};
 
 export default function Imports() {
   const [imports, setImports] = useState([]);
@@ -14,95 +26,140 @@ export default function Imports() {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [filterMonth, setFilterMonth] = useState("");
-  const [filterYear, setFilterYear] = useState("");
-  const [loading, setLoading] = useState(false); // Thêm loading state
+  const [loading, setLoading] = useState(false);
+
+  // ====================================================
+  // 1. Tải dữ liệu và Logic Lọc (useCallback, useMemo)
+  // ====================================================
+
+  const fetchImports = useCallback(async () => {
+    setLoading(true);
+    try {
+      const data = await getImports();
+      setImports(data);
+    } catch (error) {
+      console.error("Error fetching imports:", error);
+      alert("Lỗi khi tải phiếu nhập: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     fetchImports();
-  }, []);
+  }, [fetchImports]);
 
-  const fetchImports = async () => {
-    setLoading(true);
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(db, "imports"), orderBy("importDate", "desc"))
-      );
-      const data = querySnapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-      setImports(data);
-      setFilteredImports(data);
-    } catch (error) {
-      console.error("Error fetching imports:", error);
-    } finally {
-      setLoading(false);
+  // Logic Lọc (Đã tối ưu hóa)
+  useEffect(() => {
+    let filtered = imports;
+
+    if (filterMonth) {
+      filtered = filtered.filter((imp) => {
+        const date = getDateValue(imp.createdAt);
+        return date && format(date, "yyyy-MM") === filterMonth;
+      });
     }
-  };
+    setFilteredImports(filtered);
+  }, [filterMonth, imports]);
 
-  // Filter logic giữ nguyên...
+  // ====================================================
+  // 2. Logic Xử lý Modal & Actions
+  // ====================================================
 
-  const handleAdd = () => {
-    setEditingId(null);
-    setShowModal(true);
-  };
-
-  const handleEdit = (id) => {
-    setEditingId(id);
-    setShowModal(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Xóa phiếu nhập này? Dữ liệu không thể khôi phục.")) return;
-    setLoading(true);
-    try {
-      await deleteDoc(doc(db, "imports", id));
-      fetchImports();
-    } catch (error) {
-      alert("Lỗi khi xóa: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
     setEditingId(null);
-  };
+    // Không cần loadImports ở đây, chỉ cần khi submit/delete
+  }, []);
 
-  const initialImport = editingId ? imports.find((imp) => imp.id === editingId) : null;
+  const handleAdd = useCallback(() => {
+    setEditingId(null);
+    setShowModal(true);
+  }, []);
 
+  const handleEdit = useCallback((id) => {
+    setEditingId(id);
+    setShowModal(true);
+  }, []);
+
+  const handleDelete = useCallback(
+    async (id) => {
+      if (!window.confirm("Xóa phiếu nhập này? Dữ liệu không thể khôi phục."))
+        return;
+      setLoading(true);
+      try {
+        await deleteImportRecord(id);
+        fetchImports(); // Tải lại danh sách sau khi xóa
+      } catch (error) {
+        alert("Lỗi khi xóa: " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [fetchImports]
+  );
+
+  // 🚨 Logic xử lý Submit (Tinh gọn và Dựa vào Service)
+  const handleFormSubmit = useCallback(
+    async (data) => {
+      setLoading(true);
+      try {
+        if (editingId) {
+          await updateImportRecord(editingId, data);
+          alert("✅ Cập nhật thành công!");
+        } else {
+          await addImportRecord(data);
+          alert("✅ Thêm thành công!");
+        }
+
+        // 🚨 FIX LỖI: Chờ fetchImports hoàn thành
+        await fetchImports();
+
+        handleCloseModal();
+      } catch (error) {
+        console.error("Lỗi khi lưu phiếu nhập:", error);
+        alert("❌ Đã xảy ra lỗi khi lưu dữ liệu: " + error.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [editingId, fetchImports, handleCloseModal]
+  );
+
+  // 🚨 Chuẩn hóa dữ liệu ban đầu cho Form Edit (Sử dụng useMemo)
+  const initialImport = useMemo(() => {
+    if (!editingId) return null;
+    // Tìm và trả về đối tượng Import (đã là Model)
+    return imports.find((imp) => imp.id === editingId) || null;
+  }, [editingId, imports]);
+
+  // ====================================================
+  // 3. Render UI
+  // ====================================================
   return (
     <div className={styles.importsPageContainer}>
       <h1 className={styles.importsPageTitle}>
         <MdAttachMoney size={28} /> Quản lý Nhập Hàng
       </h1>
 
-      {/* Controls: Filters + Add Button - Modern flex */}
+      {/* Controls: Filters + Add Button */}
       <div className={styles.importsControls}>
+        {/* ... (Phần Filter giữ nguyên) ... */}
         <div className={styles.filterGroup}>
           <div className={styles.filterItem}>
-            <MdCalendarToday className={styles.filterIcon} />
-            <label className={styles.filterLabel}>Tháng</label>
+            <label htmlFor="filter-month" className={styles.filterLabel}>
+              Tháng/Năm
+            </label>
             <input
+              id="filter-month"
               type="month"
               value={filterMonth}
               onChange={(e) => setFilterMonth(e.target.value)}
               className={styles.filterInput}
             />
           </div>
-          <div className={styles.filterItem}>
-            <MdFilterList className={styles.filterIcon} />
-            <label className={styles.filterLabel}>Năm</label>
-            <select
-              value={filterYear}
-              onChange={(e) => setFilterYear(e.target.value)}
-              className={styles.filterInput}
-            >
-              <option value="">Tất cả</option>
-              {[...new Set(imports.map((imp) => format(parseISO(imp.importDate), "yyyy")))].map((year) => (
-                <option key={year} value={year}>{year}</option>
-              ))}
-            </select>
-          </div>
         </div>
+
         <button
           className={styles.importsAddBtn}
           onClick={handleAdd}
@@ -113,85 +170,22 @@ export default function Imports() {
         </button>
       </div>
 
-      {/* List: Cards thay table */}
-      <div className={styles.importsList}>
-        {loading ? (
-          <div className={styles.loadingState}>
-            <div className={styles.spinner}></div>
-            <p>Đang tải dữ liệu...</p>
-          </div>
-        ) : filteredImports.length === 0 ? (
-          <div className={styles.emptyState}>
-            <MdAttachMoney size={64} className={styles.emptyIcon} />
-            <h3>Chưa có phiếu nhập nào</h3>
-            <p>Bắt đầu bằng cách thêm phiếu nhập đầu tiên của bạn.</p>
-            <button onClick={handleAdd} className={styles.emptyAddBtn}>
-              <MdAdd size={20} /> Thêm Phiếu Nhập Ngay
-            </button>
-          </div>
-        ) : (
-          <div className={styles.cardsGrid}>
-            {filteredImports.map((imp) => (
-              <div key={imp.id} className={styles.importCard}>
-                <div className={styles.cardHeader}>
-                  <div className={styles.dateBadge}>
-                    {format(parseISO(imp.importDate), "dd/MM/yyyy")}
-                  </div>
-                  <div className={styles.cardActions}>
-                    <button onClick={() => handleEdit(imp.id)} className={styles.actionBtn}>
-                      <MdEdit size={16} title="Chỉnh sửa" />
-                    </button>
-                    <button onClick={() => handleDelete(imp.id)} className={styles.actionBtn}>
-                      <MdDelete size={16} title="Xóa" />
-                    </button>
-                  </div>
-                </div>
-                <div className={styles.cardBody}>
-                  <div className={styles.supplierInfo}>
-                    <MdBusiness size={20} />
-                    <span>{imp.supplierName || "N/A"}</span>
-                  </div>
-                  <div className={styles.amountInfo}>
-                    <MdAttachMoney size={20} />
-                    <strong>{imp.totalAmount?.toLocaleString()}₫</strong>
-                  </div>
-                  <div className={styles.noteInfo}>
-                    <MdNote size={16} />
-                    <span>{imp.note || "Không có ghi chú"}</span>
-                  </div>
-                  <div className={styles.itemsBadge}>
-                    {imp.items?.length || 0} sản phẩm
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* List */}
+      <ImportList
+        imports={filteredImports}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
+      {/* Modal */}
       <Modal
         isOpen={showModal}
         onClose={handleCloseModal}
         title={editingId ? "✏️ Cập nhật Phiếu Nhập" : "➕ Thêm Phiếu Nhập Mới"}
       >
         <ImportForm
-          initialData={initialImport}
-          onSubmit={async (data) => {
-            setLoading(true);
-            try {
-              if (editingId) {
-                await updateDoc(doc(db, "imports", editingId), data);
-              } else {
-                await addDoc(collection(db, "imports"), { ...data, importDate: new Date() });
-              }
-              fetchImports();
-              handleCloseModal();
-            } catch (error) {
-              alert("Lỗi: " + error.message);
-            } finally {
-              setLoading(false);
-            }
-          }}
+          initialData={initialImport} // Dữ liệu đã chuẩn hóa (Model)
+          onSubmit={handleFormSubmit}
           onCancel={handleCloseModal}
           loading={loading}
         />

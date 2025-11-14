@@ -1,29 +1,36 @@
 /* ImportItemRow.module.css - Compact, responsive row with icons & validation */
 
 .itemRowCard {
-  display: grid;
-  grid-template-columns: 1.5fr 2fr 0.5fr; /* Product | Fields | Delete */
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1.5rem;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   margin-bottom: 1rem;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  align-items: start; /* Align top cho fields */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  align-items: stretch; /* Full width for children */
+  width: 100%; /* No horizontal scroll */
+  box-sizing: border-box;
 }
 
 .itemRowCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-color: #cbd5e1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
 }
 
 .productSection {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+.fieldsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Vertical gap between fields */
 }
 
 .rowLabel {
@@ -31,13 +38,13 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   color: #374151;
   margin: 0;
 }
 
 .labelIcon {
-  color: #64748b;
+  color: #3b82f6;
   flex-shrink: 0;
   width: 16px;
   height: 16px;
@@ -46,6 +53,7 @@
 .required {
   color: #ef4444;
   font-size: 0.75rem;
+  font-weight: bold;
 }
 
 .inputWrapper {
@@ -77,17 +85,11 @@
   background: #fef2f2 !important;
 }
 
-.fieldsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 cols desktop */
-  gap: 1rem;
-  align-items: end;
-}
-
 .fieldWrapper {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  width: 100%; /* Full width to prevent horizontal scroll */
 }
 
 .numberInput, .textInput {
@@ -98,6 +100,7 @@
   background: #fafafa;
   transition: all 0.2s ease;
   box-sizing: border-box;
+  width: 100%; /* Ensure full width */
 }
 
 .numberInput:focus, .textInput:focus {
@@ -113,6 +116,7 @@
   align-items: flex-end;
   gap: 0.5rem;
   justify-content: flex-start;
+  width: 100%; /* Full width */
 }
 
 .deleteBtn {
@@ -128,6 +132,7 @@
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
+  width: auto; /* Auto width to fit content */
 }
 
 .deleteBtn:hover {
@@ -224,16 +229,15 @@
   border-left: 3px solid #ef4444;
 }
 
-/* Mobile: Stack everything */
+/* Mobile: Stack everything (already vertical) */
 @media (max-width: 768px) {
   .itemRowCard {
-    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 1rem;
   }
 
-  .fieldsGrid {
-    grid-template-columns: 1fr 1fr; /* Giữ 2 cols nếu fit, hoặc 1fr cho extra small */
+  .fieldsSection {
+    gap: 0.75rem;
   }
 
   .deleteBtn {
@@ -244,13 +248,13 @@
   }
 
   @media (max-width: 480px) {
-    .fieldsGrid {
-      grid-template-columns: 1fr;
-    }
-
     .searchInput, .numberInput, .textInput {
       padding: 10px 10px 10px 36px;
       font-size: 0.9rem;
+    }
+
+    .rowLabel {
+      font-size: 0.8rem;
     }
   }
 }

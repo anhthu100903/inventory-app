@@ -3,6 +3,9 @@ import React from 'react';
 import styles from './SupplierForm.module.css';
 
 function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
+  console.debug("SupplierForm render - form:", form, "editingId:", editingId);
+  const safe = (val) => (val === null || val === undefined ? "" : val);
+
   return (
     <form onSubmit={onSubmit} className={styles.supplierForm}>
       {/* Field: Tên */}
@@ -12,7 +15,7 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           id="name"
           name="name" 
           placeholder="Nhập tên nhà cung cấp" 
-          value={form.name} 
+          value={safe(form?.name)} 
           onChange={onChange} 
           required 
           className={styles.formInput}
@@ -27,7 +30,7 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           name="email" 
           type="email"
           placeholder="Nhập email" 
-          value={form.email} 
+          value={safe(form?.email)} 
           onChange={onChange} 
           className={styles.formInput}
         />
@@ -41,7 +44,7 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           name="phone" 
           type="tel"
           placeholder="Nhập số điện thoại" 
-          value={form.phone} 
+          value={safe(form?.phone)} 
           onChange={onChange} 
           className={styles.formInput}
         />
@@ -54,7 +57,7 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           id="address"
           name="address" 
           placeholder="Nhập địa chỉ" 
-          value={form.address} 
+          value={safe(form?.address)} 
           onChange={onChange} 
           className={styles.formInput}
         />
@@ -67,7 +70,7 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           id="note"
           name="note" 
           placeholder="Nhập ghi chú..." 
-          value={form.note} 
+          value={safe(form?.note)} 
           onChange={onChange} 
           rows={3}
           className={styles.formTextarea}

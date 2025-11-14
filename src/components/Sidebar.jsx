@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import '../styles/Sidebar.css'; 
-import { MdDashboard, MdInventory, MdPeople, MdAddShoppingCart, MdCallMade, MdClose } from 'react-icons/md'; 
+import { MdDashboard, MdInventory, MdPeople, MdAddShoppingCart, MdCallMade, MdChevronLeft } from 'react-icons/md'; 
 
 // Cần cài đặt react-icons nếu chưa có: npm install react-icons
 
@@ -23,8 +23,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         <h1 className="logo-title">
           Cát Vi
         </h1>
-        <button className="close-btn" onClick={onClose} aria-label="Đóng menu">
-          <MdClose size={24} />
+        <button className="sidebar-close-btn" onClick={onClose} aria-label="Đóng menu">
+          <MdChevronLeft size={24} />
         </button>
       </div>
 

@@ -1,11 +1,10 @@
 // components/Import/SupplierSelect.jsx
 import React, { useState, useEffect } from "react";
 import { MdSearch, MdClose, MdBusiness, MdArrowDropDown, MdArrowDropUp, MdAdd } from "react-icons/md";
-import { collection, getDocs } from "firebase/firestore"; // Bỏ addDoc, vì add qua modal
-import { db } from "../../firebaseConfig";
+import { getAllSuppliers } from "../../../services/supplierService"; // import từ service
 import styles from "./SupplierSelect.module.css";
 
-export default function SupplierSelect({ onSelect, error, className = "", onOpenSupplierModal }) {
+export default function SupplierSelect({ onSelect, error, className = "", onOpenSupplierModal, value = null }) {
   const [suppliers, setSuppliers] = useState([]);
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
@@ -16,11 +15,10 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
     const fetchSuppliers = async () => {
       setLoading(true);
       try {
-        const querySnapshot = await getDocs(collection(db, "suppliers"));
-        const data = querySnapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
+        const data = await getAllSuppliers(); // lấy từ service
         setSuppliers(data);
-      } catch (error) {
-        console.error("Error fetching suppliers:", error);
+      } catch (err) {
+        console.error("Error fetching suppliers:", err);
       } finally {
         setLoading(false);
       }
@@ -29,15 +27,27 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
   }, []);
 
   useEffect(() => {
-    if (search.trim() === "") {
+    // If a selected value is provided from parent, reflect its name in the input
+    if (value && value.name) {
+      setSearch(value.name);
       setFiltered([]);
       return;
     }
+
+    if (search.trim() === "") {
+      if (isOpen) {
+        setFiltered(suppliers.slice(0, 10)); // Hiển thị 10 nhà cung cấp đầu
+      } else {
+        setFiltered([]);
+      }
+      return;
+    }
+
     const result = suppliers.filter((s) =>
       s.name.toLowerCase().includes(search.toLowerCase())
     );
     setFiltered(result);
-  }, [search, suppliers]);
+  }, [search, suppliers, isOpen, value]);
 
   const handleSelect = (supplier) => {
     onSelect(supplier);
@@ -57,10 +67,9 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
     if (!isOpen && !search) setFiltered(suppliers.slice(0, 10));
   };
 
-  // 👈 Khi không tìm thấy, mở modal form thay vì add trực tiếp
   const handleOpenAddModal = (suggestedName = "") => {
-    setIsOpen(false); // Đóng dropdown
-    onOpenSupplierModal(suggestedName); // Gọi prop từ parent
+    setIsOpen(false);
+    onOpenSupplierModal(suggestedName);
   };
 
   return (
@@ -71,11 +80,10 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
           onChange={(e) => setSearch(e.target.value)}
           className={`${styles.supplierInput} ${isOpen ? styles.open : ""}`}
           placeholder="Chọn nhà cung cấp..."
-          disabled={loading}
           readOnly={true}
           onClick={toggleDropdown}
         />
-        <button type="button" onClick={toggleDropdown} className={styles.selectBtn} disabled={loading}>
+        <button type="button" onClick={toggleDropdown} className={styles.selectBtn}>
           {isOpen ? <MdArrowDropUp size={18} /> : <MdArrowDropDown size={18} />}
         </button>
         {search && (
@@ -84,7 +92,9 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
           </button>
         )}
       </div>
+
       {error && <p className={styles.errorMsg}>{error}</p>}
+
       {isOpen && (
         <div className={styles.searchForm}>
           <div className={styles.searchWrapper}>
@@ -97,6 +107,7 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
               autoFocus
             />
           </div>
+
           {loading ? (
             <div className={styles.loadingMsg}>
               <div className={styles.spinner}></div>

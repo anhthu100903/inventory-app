@@ -1,5 +1,6 @@
 // components/Import/ImportItemRow.jsx
 import React from "react";
+import styles from "./ImportItemRow.module.css";
 import { MdDelete, MdSearch, MdCheckBox } from "react-icons/md";
 
 export default function ImportItemRow({
@@ -19,55 +20,55 @@ export default function ImportItemRow({
   };
 
   return (
-    <div className="itemRowCard">
+    <div className={styles.itemRowCard}>
       {/* Product Name - Searchable */}
-      <div className="productSection">
-        <label className="rowLabel">
-          <MdSearch className="labelIcon" />
-          Tên sản phẩm <span className="required">*</span>
+      <div className={styles.productSection}>
+        <label className={styles.rowLabel}>
+          <MdSearch className={styles.labelIcon} />
+          Tên sản phẩm <span className={styles.required}>*</span>
         </label>
-        <div className="inputWrapper">
+        <div className={styles.inputWrapper}>
           <input
             type="text"
             {...register(`items.${index}.productName`, { 
               required: "Tên sản phẩm bắt buộc", 
               minLength: { value: 2, message: "Tên ít nhất 2 ký tự" }
             })}
-            className={`searchInput ${errors.productName ? "errorInput" : ""}`}
+            className={`${styles.searchInput} ${errors.productName ? styles.errorInput : ""}`}
             placeholder="Nhập tên sản phẩm để tìm..."
             onChange={(e) => onSearchProduct(index, e.target.value)}
           />
           <input type="hidden" {...register(`items.${index}.productId`)} />
           {loading ? (
-            <div className="dropdown">
-              <div className="spinner"></div>
+            <div className={styles.dropdown}>
+              <div className={styles.spinner}></div>
               <span>Đang tìm sản phẩm...</span>
             </div>
           ) : searchResults.length > 0 ? (
-            <ul className="dropdown">
+            <ul className={styles.dropdown}>
               {searchResults.map((p) => (
                 <li
                   key={p.id}
                   onClick={() => onSelectProduct(index, p)}
-                  className="dropdownItem"
+                  className={styles.dropdownItem}
                 >
-                  <div className="itemName">{p.name}</div>
-                  <div className="itemDetails">
-                    <span className="unit">{p.unit}</span> • <span className="price">{p.importPrice?.toLocaleString()}₫</span>
+                  <div className={styles.itemName}>{p.name}</div>
+                  <div className={styles.itemDetails}>
+                    <span className={styles.unit}>{p.unit}</span> • <span className={styles.price}>{p.importPrice?.toLocaleString()}₫</span>
                   </div>
                 </li>
               ))}
             </ul>
           ) : null}
         </div>
-        {errors.productName && <p className="errorMsg">{errors.productName.message}</p>}
+        {errors.productName && <p className={styles.errorMsg}>{errors.productName.message}</p>}
       </div>
 
-      {/* Fields Grid */}
-      <div className="fieldsGrid">
-        <div className="fieldWrapper">
-          <label className="rowLabel">
-            📦 Số lượng <span className="required">*</span>
+      {/* Fields - Vertical Stack */}
+      <div className={styles.fieldsSection}>
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
+            📦 Số lượng <span className={styles.required}>*</span>
           </label>
           <input 
             type="number" 
@@ -75,15 +76,15 @@ export default function ImportItemRow({
               required: "Số lượng bắt buộc", 
               min: { value: 1, message: "Số lượng >= 1" } 
             })} 
-            className={`numberInput ${errors.quantity ? "errorInput" : ""}`} 
+            className={`${styles.numberInput} ${errors.quantity ? styles.errorInput : ""}`} 
             min="1" 
             placeholder="0"
           />
-          {errors.quantity && <p className="errorMsg">{errors.quantity.message}</p>}
+          {errors.quantity && <p className={styles.errorMsg}>{errors.quantity.message}</p>}
         </div>
-        <div className="fieldWrapper">
-          <label className="rowLabel">
-            💰 Giá nhập (₫) <span className="required">*</span>
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
+            💰 Giá nhập (₫) <span className={styles.required}>*</span>
           </label>
           <input 
             type="number" 
@@ -91,14 +92,14 @@ export default function ImportItemRow({
               required: "Giá nhập bắt buộc", 
               min: { value: 0, message: "Giá >= 0" } 
             })} 
-            className={`numberInput ${errors.importPrice ? "errorInput" : ""}`} 
+            className={`${styles.numberInput} ${errors.importPrice ? styles.errorInput : ""}`} 
             min="0" 
             placeholder="0"
           />
-          {errors.importPrice && <p className="errorMsg">{errors.importPrice.message}</p>}
+          {errors.importPrice && <p className={styles.errorMsg}>{errors.importPrice.message}</p>}
         </div>
-        <div className="fieldWrapper">
-          <label className="rowLabel">
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
             📊 % Lợi nhuận
           </label>
           <input 
@@ -107,32 +108,32 @@ export default function ImportItemRow({
               min: { value: 0, message: "% >= 0" },
               max: { value: 100, message: "% <= 100" }
             })} 
-            className={`numberInput ${errors.profitPercent ? "errorInput" : ""}`} 
+            className={`${styles.numberInput} ${errors.profitPercent ? styles.errorInput : ""}`} 
             min="0" 
             max="100" 
             step="0.01" 
             placeholder="0"
           />
-          {errors.profitPercent && <p className="errorMsg">{errors.profitPercent.message}</p>}
+          {errors.profitPercent && <p className={styles.errorMsg}>{errors.profitPercent.message}</p>}
         </div>
-        <div className="fieldWrapper">
-          <label className="rowLabel">
+        <div className={styles.fieldWrapper}>
+          <label className={styles.rowLabel}>
             📏 Đơn vị
           </label>
           <input 
             type="text" 
             {...register(`items.${index}.unit`, { maxLength: { value: 20, message: "Đơn vị quá dài" }})} 
-            className={`textInput ${errors.unit ? "errorInput" : ""}`} 
+            className={`${styles.textInput} ${errors.unit ? styles.errorInput : ""}`}
             placeholder="VD: Cái, Kg, Hộp..." 
             maxLength="20"
           />
-          {errors.unit && <p className="errorMsg">{errors.unit.message}</p>}
+          {errors.unit && <p className={styles.errorMsg}>{errors.unit.message}</p>}
         </div>
       </div>
 
       {/* Delete */}
-      <div className="rowActions">
-        <button type="button" onClick={handleDelete} className="deleteBtn" aria-label="Xóa sản phẩm">
+      <div className={styles.rowActions}>
+        <button type="button" onClick={handleDelete} className={styles.deleteBtn} aria-label="Xóa sản phẩm">
           <MdDelete size={20} />
           <span>Xóa</span>
         </button>

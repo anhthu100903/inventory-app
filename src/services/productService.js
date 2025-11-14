@@ -1,95 +1,81 @@
 import { db } from "../firebaseConfig";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  doc,
-  getDoc,
-  query,
-  where,
-  limit
-} from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc, query, where, limit, getDoc } from "firebase/firestore";
+import { Product } from "../models/Product";
 
 const PRODUCTS_COLLECTION = "products";
+const productsCollectionRef = collection(db, PRODUCTS_COLLECTION);
 
-/**
- * ✅ Lấy tất cả sản phẩm
- */
+// Tạo SKU: chữ cái đầu + 3 số ngẫu nhiên
+export const generateSKU = (name) => {
+  const firstLetter = name.trim()[0]?.toUpperCase() || "X";
+  const randomNum = Math.floor(Math.random() * 900 + 100); // 100–999
+  return `${firstLetter}-${randomNum}`;
+};
+
+
 export const getAllProducts = async () => {
-  const snapshot = await getDocs(collection(db, PRODUCTS_COLLECTION));
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  const snap = await getDocs(productsCollectionRef);
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
 
-/**
- * ✅ Thêm sản phẩm mới
- */
-export const addProduct = async (product) => {
-  const docRef = await addDoc(collection(db, PRODUCTS_COLLECTION), {
-    ...product,
-    createAt: new Date(),
-    updateAt: new Date(),
-  });
-  return { id: docRef.id, ...product };
-};
-
-/**
- * ✅ Cập nhật sản phẩm
- */
-export const updateProduct = async (id, data) => {
-  console.log("Updating product ID:", id, "with data:", data);
-  const docRef = doc(db, PRODUCTS_COLLECTION, id);
-  await updateDoc(docRef, {
-    ...data,
-    updateAt: new Date(),
-  });
-};
-
-/**
- * ✅ Xóa sản phẩm
- */
-export const deleteProduct = async (id) => {
-  await deleteDoc(doc(db, PRODUCTS_COLLECTION, id));
-};
-
-/**
- * ✅ Lấy chi tiết sản phẩm
- */
 export const getProductById = async (id) => {
-  const docRef = doc(db, PRODUCTS_COLLECTION, id);
-  const snap = await getDoc(docRef);
-  if (snap.exists()) {
-    return { id: snap.id, ...snap.data() };
-  }
-  return null;
+  const snap = await getDoc(doc(db, PRODUCTS_COLLECTION, id));
+  if (!snap.exists()) return null;
+  return { id: snap.id, ...snap.data() };
 };
 
-//hàm tìm kiếm sản phẩm theo tên
 export const findProductsByName = async (name) => {
   if (!name || name.length < 1) return [];
+  const q = query(productsCollectionRef, where("name", "==", name), limit(10));
+  const snap = await getDocs(q);
+  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+};
 
-  const productsRef = collection(db, "products");
-  const q = query(
-    productsRef,
-    where("name", ">=", name),
-    where("name", "<=", name + "\uf8ff"),
-    limit(10)
-  );
-
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+// Thêm sản phẩm mới
+export const addProduct = async (product) => {
+  if (!(product instanceof Product)) product = new Product(product);
+  if (!product.sku) product.sku = generateSKU(product.name);
+  const docRef = await addDoc(productsCollectionRef, product.toFirestore());
+  return new Product({ id: docRef.id, ...product });
 };
 
 /**
- * ✅ Tìm sản phẩm theo SKU
+ * ✅ Tăng tồn kho và cập nhật giá trung bình
+ * @param {string} productId 
+ * @param {number} quantity Số lượng nhập
+ * @param {number} importPrice Giá nhập sản phẩm mới
  */
-export const findProductBySKU = async (sku) => {
-  const q = query(collection(db, PRODUCTS_COLLECTION), where("sku", "==", sku));
-  const snapshot = await getDocs(q);
-  if (!snapshot.empty) {
-    const docSnap = snapshot.docs[0];
-    return { id: docSnap.id, ...docSnap.data() };
-  }
-  return null;
+export const increaseStock = async (productId, quantity, importPrice) => {
+  const docRef = doc(db, PRODUCTS_COLLECTION, productId);
+  const snap = await getDoc(docRef);
+  if (!snap.exists()) throw new Error("Product not found");
+
+  const p = snap.data();
+
+  // Ép kiểu number để tránh cộng chuỗi
+  const oldStock = Number(p.totalInStock || 0);
+  const oldAvgPrice = Number(p.averageImportPrice || 0);
+  const qty = Number(quantity);
+  const price = Number(importPrice || 0);
+  const profitPercent = Number(p.profitPercent || 10);
+
+  // Tính tổng tồn kho mới
+  const newStock = oldStock + qty;
+
+  // Tính giá trung bình nhập mới
+  const newAvgPrice = oldStock === 0
+    ? price
+    : (oldAvgPrice * oldStock + price * qty) / newStock;
+
+  // Cập nhật giá bán dựa trên profitPercent
+  const newSellingPrice = newAvgPrice * (1 + profitPercent / 100);
+
+  await updateDoc(docRef, {
+    totalInStock: newStock,
+    averageImportPrice: newAvgPrice,
+    sellingPrice: newSellingPrice,
+    updatedAt: new Date(),
+  });
+
+  return { totalInStock: newStock, averageImportPrice: newAvgPrice, sellingPrice: newSellingPrice };
 };

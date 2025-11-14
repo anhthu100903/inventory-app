@@ -1,0 +1,207 @@
+.importList {
+  padding: 1rem;
+}
+
+.tableContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+  font-size: 0.9rem;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 0.5rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: #f0f0f0;
+  font-weight: 600;
+}
+
+.actionHeader {
+  min-width: 80px;
+}
+
+.actionCell {
+  white-space: nowrap;
+  position: relative;
+}
+
+.actionButton {
+  font-size: 1.1rem;
+  margin: 0 2px;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.actionButton:hover {
+  background-color: #f0f0f0;
+}
+
+.viewButton {
+  color: #007bff;
+}
+
+.editButton {
+  color: #ffc107;
+}
+
+.deleteButton {
+  color: #dc3545;
+}
+
+.moreButton {
+  display: none;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 4px;
+  color: #6c757d;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 140px;
+  padding: 4px 0;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.dropdownItem:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.viewItem {
+  color: #007bff;
+}
+
+.editItem {
+  color: #ffc107;
+}
+
+.deleteItem {
+  color: #dc3545;
+}
+
+.dropdownItem svg {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .tableContainer {
+    /* Allow dropdown to escape the table container on mobile */
+    overflow-x: auto; /* vẫn giữ để scroll ngang nếu cần */
+    overflow: visible; /* show dropdown outside the container */
+  }
+
+  .table {
+    min-width: 0; /* bỏ min-width để table co lại */
+    table-layout: auto; /* tự động co cột */
+    font-size: 0.7rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.2rem 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px; /* Giới hạn mỗi cột */
+  }
+
+  /* Chỉ hiển thị cột quan trọng để không quá rộng */
+  .hideOnMobile {
+    display: none;
+  }
+
+  .moreButton {
+    display: block; /* Buộc hiển thị */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%); /* Căn giữa nút */
+  }
+  .actionButton {
+    display: none;
+  }
+
+  .actionHeader {
+    min-width: 40px;
+    max-width: 40px;
+    width: 40px;
+    text-align: center;
+    padding: 0.4rem 0.1rem;
+
+    /* FIX: Ẩn chữ "Hành động" gốc (Sử dụng text-indent) */
+    text-indent: -9999px;
+    overflow: hidden;
+  }
+
+  /* Đảm bảo ẩn Desktop Actions */
+    .desktopActions {
+        display: none !important;
+    }
+    
+    /* Hiển thị wrapper trên Mobile */
+    .mobileActionsWrapper {
+        display: block !important;
+    }
+    
+    .actionCell {
+        text-align: center; 
+    }
+}
+
+  /* Ensure dropdown sits above other content on mobile */
+  @media screen and (max-width: 767px) {
+    .dropdown {
+      z-index: 99999;
+    }
+  }
+
+/* 🚨 Ẩn wrapper này trên Desktop */
+@media screen and (min-width: 768px) {
+    .mobileActionsWrapper {
+        display: none !important;
+    }
+}
+

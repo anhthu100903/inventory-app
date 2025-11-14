@@ -128,6 +128,7 @@ function Suppliers() {
 
   // Xử lý khi nhấn nút Sửa (Được bảo vệ bằng useCallback)
   const handleEdit = useCallback((supplier) => {
+    console.debug("handleEdit called with supplier:", supplier);
     setEditingId(supplier.id);
     setForm(supplier);
     setIsFormVisible(true);

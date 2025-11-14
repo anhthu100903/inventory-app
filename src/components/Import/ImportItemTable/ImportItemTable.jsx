@@ -1,8 +1,8 @@
 // components/Import/ImportItemTable.jsx - Add borders between rows
 import React from "react";
-import ImportItemRow from "./ImportItemRow";
+import ImportItemRow from "../ImportItemRow/ImportItemRow";
 import { MdPlaylistAddCheck, MdAdd } from "react-icons/md";
-import { findProductsByName } from "../../services/productService";
+import { findProductsByName } from "../../../services/productService";
 import styles from "./ImportItemTable.module.css";
 
 export default function ImportItemTable({ fields, register, append, remove, setValue, errors, className = "" }) {
