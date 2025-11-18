@@ -1,0 +1,14 @@
+.listContainer {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
