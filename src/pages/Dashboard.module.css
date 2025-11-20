@@ -1,0 +1,177 @@
+/* Dashboard.module.css - Modern dashboard with cards, tables, responsive design */
+html, body {
+  height: 100%;
+  overflow: auto; /* Đảm bảo body cho phép scroll */
+}
+
+.container {
+  padding: 1.5rem;
+  background: #f8fafc;
+  min-height: 100vh;
+  height: auto; /* Thay đổi để cho phép nội dung mở rộng */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-y: auto; /* Đảm bảo scroll dọc nếu nội dung dài */
+  box-sizing: border-box;
+}
+
+.container h1 {
+  margin: 0 0 2rem 0;
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.kpiCard {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid #e2e8f0;
+}
+
+.kpiCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.kpiLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.kpiValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.section {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  overflow: visible; /* Không giới hạn overflow trong section */
+}
+
+.section h2 {
+  margin: 0 0 1rem 0;
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  margin-top: 1rem;
+}
+
+.table th {
+  background: #f8fafc;
+  color: #374151;
+  font-weight: 600;
+  padding: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.table tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+.table tr:hover {
+  background: #eff6ff;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.warning {
+  background: #fef2f2;
+}
+
+.warning td {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: #9ca3af;
+  font-style: italic;
+  padding: 2rem;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .container h1 {
+    font-size: 1.5rem;
+  }
+
+  .kpiGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .twoColumn {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+}

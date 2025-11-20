@@ -1,27 +1,15 @@
-/* SupplierList.module.css - Đồng bộ với các list khác: table striped, hover, icons, dropdown mobile */
-.supplierList {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.empty {
-  padding: 2rem;
-  text-align: center;
-  color: #64748b;
-  font-size: 1rem;
-}
-
 .tableContainer {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 600px;
+  min-width: 500px;
   font-size: 0.9rem;
 }
 
@@ -38,9 +26,14 @@
   font-weight: 600;
 }
 
-.supplierName {
+.categoryName {
   font-weight: 600;
-  color: #007bff;
+  color: #3b82f6;
+  cursor: pointer;
+}
+
+.categoryName:hover {
+  text-decoration: underline;
 }
 
 .row:nth-child(even) {
@@ -75,8 +68,12 @@
   background-color: #f0f0f0;
 }
 
+.viewButton {
+  color: #3b82f6;
+}
+
 .editButton {
-  color: #ffc107;
+  color: #f59e0b;
 }
 
 .deleteButton {
@@ -128,8 +125,14 @@
   background-color: rgba(0, 123, 255, 0.1);
 }
 
+.viewItem {
+  color: #3b82f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 .editItem {
-  color: #ffc107;
+  color: #f59e0b;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .deleteItem {
@@ -162,10 +165,6 @@
     max-width: 100px;
   }
 
-  .hideOnMobile {
-    display: none;
-  }
-
   .moreButton {
     display: block;
     position: relative;
@@ -189,6 +188,17 @@
 
   .actionCell {
     text-align: center;
+  }
+
+  .toolbar {
+    justify-content: center;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
   }
 }
 

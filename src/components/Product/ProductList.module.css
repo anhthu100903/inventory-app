@@ -1,65 +1,79 @@
+/* ProductList.module.css - Đồng bộ với các list khác: table bordered, striped, hover, icons, dropdown mobile, pagination */
 .productList {
-  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .noData {
-  text-align: center;
-  color: #999;
   padding: 2rem;
-  font-size: 1.1rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 1rem;
 }
 
 .tableContainer {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 500px;
+  min-width: 700px;
   font-size: 0.9rem;
 }
 
 .table th,
 .table td {
-  border: 1px solid #ddd;
-  padding: 0.75rem 0.5rem;
+  border: 1px solid #ccc;
+  padding: 0.5rem;
   text-align: left;
   vertical-align: middle;
 }
 
 .table th {
-  background-color: #f5f5f5;
+  background-color: #f0f0f0;
   font-weight: 600;
-  color: #333;
-}
-
-.table tbody tr:hover {
-  background-color: #fafafa;
 }
 
 .nameCell {
-  font-weight: 500;
+  font-weight: 600;
   color: #007bff;
 }
 
 .badge {
-  display: inline-block;
-  background-color: #e7f3ff;
-  color: #0066cc;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  background: #dbeafe;
+  color: #1e40af;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
   font-weight: 500;
+}
+
+.row:nth-child(even) {
+  background: #f8fafc;
+}
+
+.row:hover {
+  background: #eff6ff;
+}
+
+.hideOnMobile {
+  display: table-cell;
+}
+
+.hideOnTablet {
+  display: table-cell;
+}
+.actionHeader {
+  min-width: 80px;
 }
 
 .actionCell {
   white-space: nowrap;
   position: relative;
-  text-align: center;
 }
 
 .actionButton {
@@ -71,7 +85,6 @@
   border: none;
   background: none;
   cursor: pointer;
-  color: inherit;
 }
 
 .actionButton:hover {
@@ -79,11 +92,11 @@
 }
 
 .viewButton {
-  color: #007bff;
+  color: #3b82f6;
 }
 
 .editButton {
-  color: #ffc107;
+  color: #f59e0b;
 }
 
 .deleteButton {
@@ -101,15 +114,21 @@
   cursor: pointer;
 }
 
+.moreButton:hover {
+  background: #f0f0f0;
+}
+
 .dropdown {
   position: absolute;
+  top: 100%;
+  right: 0;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 99999;
+  z-index: 1000;
   min-width: 140px;
   padding: 4px 0;
 }
@@ -127,6 +146,7 @@
   text-align: left;
   transition: background-color 0.2s;
   white-space: nowrap;
+  color: #374151;
 }
 
 .dropdownItem:hover {
@@ -134,169 +154,191 @@
 }
 
 .viewItem {
-  color: #007bff;
+  color: #3b82f6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .editItem {
-  color: #ffc107;
+  color: #f59e0b;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .deleteItem {
   color: #dc3545;
 }
 
-.detailModal {
+.dropdownItem svg {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.pagination {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   padding: 1rem;
+  background: white;
+  border-top: 1px solid #e2e8f0;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #f3f4f6;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-weight: 500;
+  color: #374151;
+}
+
+.detailModal {
+  padding: 1.5rem;
 }
 
 .detailHighlight {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
+  margin-bottom: 1.5rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #f5f7fa 0%, #e8eef7 100%);
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
 }
 
 .highlightItem {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  text-align: center;
+  gap: 0.25rem;
 }
 
 .highlightLabel {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #1e293b;
+  font-size: 0.875rem;
 }
 
 .highlightValue {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #007bff;
+  font-weight: 600;
+  color: #3b82f6;
+  font-size: 1.125rem;
 }
 
 .detailSection {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .sectionTitle {
-  margin: 0;
-  font-size: 0.95rem;
+  color: #1e293b;
+  font-size: 1rem;
   font-weight: 600;
-  color: #333;
+  margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .detailRow {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .detailLabel {
-  font-weight: 600;
-  color: #666;
-  min-width: 100px;
-  font-size: 0.9rem;
+  font-weight: 500;
+  color: #64748b;
+  min-width: 120px;
 }
 
 .detailValue {
-  color: #333;
-  text-align: right;
-  font-size: 0.9rem;
-}
-@media screen and (min-width: 768px) {
-  .moreButton {
-    display: none;
-  }
-
-  .actionButton {
-    display: inline-block;
-  }
-
-  .hideOnMobile {
-    display: table-cell;
-  }
-
-  .hideOnTablet {
-    display: table-cell;
-  }
+  color: #475569;
 }
 
-/* Tablet: ẩn một số cột */
-@media screen and (max-width: 767px) and (min-width: 577px) {
-  .hideOnMobile {
-    display: none;
-  }
-
-  .hideOnTablet {
-    display: none;
-  }
-
-  .moreButton {
-    display: block;
-  }
-
-  .actionButton {
-    display: none;
+@media screen and (max-width: 767px) {
+  .tableContainer {
+    overflow-x: auto;
+    overflow: visible;
   }
 
   .table {
-    min-width: auto;
-    font-size: 0.8rem;
-  }
-
-  .table th,
-  .table td {
-    padding: 0.4rem 0.3rem;
-  }
-}
-
-/* Mobile */
-@media screen and (max-width: 576px) {
-  .hideOnMobile {
-    display: none;
-  }
-
-  .hideOnTablet {
-    display: none;
-  }
-
-  .moreButton {
-    display: block;
-  }
-
-  .actionButton {
-    display: none;
-  }
-
-  .table {
-    min-width: auto;
+    min-width: 0;
+    table-layout: auto;
     font-size: 0.7rem;
   }
 
   .table th,
   .table td {
-    padding: 0.3rem 0.2rem;
-  }
-
-  .nameCell {
-    max-width: 80px;
+    padding: 0.2rem 0.4rem;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    max-width: 100px;
+  }
+
+  .hideOnMobile {
+    display: none;
+  }
+
+  .hideOnTablet {
+    display: none;
+  }
+
+  .moreButton {
+    display: flex;
+  }
+
+  .actionButton {
+    display: none;
+  }
+
+  .actionHeader {
+    min-width: 40px;
+    max-width: 40px;
+    width: 40px;
+    text-align: center;
+    padding: 0.4rem 0.1rem;
+    text-indent: -9999px;
+    overflow: hidden;
+  }
+
+  .actionCell {
+    text-align: center;
+  }
+
+  .pagination {
+    padding: 0.75rem;
+  }
+
+  .detailHighlight {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .highlightValue {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .hideOnTablet {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .moreButton {
+    display: none;
   }
 }

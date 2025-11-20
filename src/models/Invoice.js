@@ -2,7 +2,6 @@ export class Invoice {
   constructor({
     id = null,
     invoiceNumber = "",
-    date = new Date(),
     items = [],
     totalAmount = 0,
     customer = "",
@@ -13,7 +12,6 @@ export class Invoice {
   } = {}) {
     this.id = id;
     this.invoiceNumber = invoiceNumber;
-    this.date = date instanceof Date ? date : new Date(date);
     this.items = Array.isArray(items) ? items : [];
     this.totalAmount = totalAmount;
     this.customer = customer;
@@ -26,7 +24,6 @@ export class Invoice {
   toFirestore() {
     const data = {
       invoiceNumber: this.invoiceNumber,
-      date: this.date,
       items: this.items,
       totalAmount: this.totalAmount,
       customer: this.customer,
@@ -41,7 +38,6 @@ export class Invoice {
     return new Invoice({
       id,
       invoiceNumber: data.invoiceNumber || "",
-      date: data.date ? new Date(data.date) : new Date(),
       items: Array.isArray(data.items) ? data.items : [],
       totalAmount: data.totalAmount || 0,
       customer: data.customer || "",

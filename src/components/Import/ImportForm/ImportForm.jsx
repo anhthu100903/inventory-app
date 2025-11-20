@@ -4,6 +4,7 @@ import { MdCalendarToday, MdBusiness, MdNoteAdd, MdCalculate, MdAddCircle, MdChe
 import Modal from "../../Modal";
 import SupplierForm from "../../Supplier/SupplierForm";
 import SupplierSelect from "../SupplierSelect/SupplierSelect";
+import { addSupplier as addSupplierService, updateSupplier as updateSupplierService } from "../../../services/supplierService";
 import ImportItemTable from "../ImportItemTable/ImportItemTable";
 import styles from "./ImportForm.module.css";
 
@@ -47,6 +48,7 @@ export default function ImportForm({ initialData, onSubmit, onCancel, loading = 
     const [showSupplierModal, setShowSupplierModal] = useState(false);
     const [supplierForm, setSupplierForm] = useState({ name: "", email: "", phone: "", address: "", note: "" });
     const [editingSupplierId, setEditingSupplierId] = useState(null);
+    const [supplierReloadKey, setSupplierReloadKey] = useState(0);
     
     // 🚨 FIX 3: Đồng bộ hóa dữ liệu khi initialData thay đổi (Edit Mode)
     useEffect(() => {
@@ -110,9 +112,23 @@ export default function ImportForm({ initialData, onSubmit, onCancel, loading = 
     };
 
     const handleSupplierSubmit = async (supplierData) => {
-        // Hàm này cần được ủy quyền cho Component cha để thêm/cập nhật DB
-        setSelectedSupplier(supplierData);
-        setShowSupplierModal(false);
+        // Save to DB: add or update
+        try {
+            let saved = null;
+            if (editingSupplierId) {
+                saved = await updateSupplierService(editingSupplierId, supplierData);
+            } else {
+                saved = await addSupplierService(supplierData);
+            }
+            if (!saved) throw new Error("Không lưu được nhà cung cấp");
+            setSelectedSupplier(saved);
+            setShowSupplierModal(false);
+            // trigger SupplierSelect to reload list
+            setSupplierReloadKey((k) => k + 1);
+        } catch (err) {
+            console.error("Lỗi khi lưu nhà cung cấp:", err);
+            alert("Lỗi khi lưu nhà cung cấp: " + (err?.message || err));
+        }
     };
 
     const handleSupplierCancel = () => {
@@ -129,7 +145,7 @@ export default function ImportForm({ initialData, onSubmit, onCancel, loading = 
             <div className={styles.sectionCard}>
                 <div className={styles.sectionHeader}><MdCalendarToday className={styles.sectionIcon} /><h3 className={styles.sectionTitle}>Ngày nhập hàng</h3></div>
                 <div className={styles.formGroup}>
-                    <input type="date" {...register("importDate", { required: "Chọn ngày nhập" })} className={styles.formInput} max={new Date().toISOString().split("T")[0]} />
+                    <input readOnly {...register("importDate", { required: "Chọn ngày nhập" })} className={styles.formInput} max={new Date().toISOString().split("T")[0]} />
                     {errors.importDate && <p className={styles.errorMessage}>{errors.importDate.message}</p>}
                 </div>
             </div>
@@ -138,7 +154,7 @@ export default function ImportForm({ initialData, onSubmit, onCancel, loading = 
             <div className={styles.sectionCard}>
                 <div className={styles.sectionHeader}><MdBusiness className={styles.sectionIcon} /><h3 className={styles.sectionTitle}>Nhà cung cấp <span className={styles.required}>*</span></h3></div>
                 <div className={styles.formGroup}>
-                    <SupplierSelect onSelect={setSelectedSupplier} value={selectedSupplier} onOpenSupplierModal={handleOpenSupplierModal} isSupplierModalOpen={showSupplierModal} />
+                    <SupplierSelect onSelect={setSelectedSupplier} value={selectedSupplier} onOpenSupplierModal={handleOpenSupplierModal} isSupplierModalOpen={showSupplierModal} reloadKey={supplierReloadKey} />
                 </div>
             </div>
 

@@ -3,11 +3,16 @@ import React from 'react';
 import styles from './SupplierForm.module.css';
 
 function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
-  console.debug("SupplierForm render - form:", form, "editingId:", editingId);
   const safe = (val) => (val === null || val === undefined ? "" : val);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Pass the current form object to parent instead of raw event
+    if (typeof onSubmit === "function") onSubmit(form);
+  };
+
   return (
-    <form onSubmit={onSubmit} className={styles.supplierForm}>
+    <form onSubmit={handleSubmit} className={styles.supplierForm}>
       {/* Field: Tên */}
       <div className={styles.formGroup}>
         <label htmlFor="name" className={styles.formLabel}>Tên nhà cung cấp *</label>
@@ -83,15 +88,13 @@ function SupplierForm({ form, editingId, onChange, onSubmit, onCancel }) {
           type="button"
           onClick={onCancel}
           className={styles.cancelButton}
-          disabled={!editingId} // Ẩn nếu không edit
-          style={{ display: editingId ? 'block' : 'none' }}
         >
           ❌ Hủy
         </button>
         <button
           type="submit"
           className={`${styles.actionButton} ${editingId ? styles.updateButton : styles.addButton}`}
-          disabled={!form.name} // Disable nếu thiếu tên
+          disabled={!form?.name}
         >
           {editingId ? "💾 Cập nhật" : "➕ Thêm"}
         </button>

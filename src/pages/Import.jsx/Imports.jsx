@@ -14,7 +14,11 @@ import ImportList from "../../components/Import/ImportList/ImportList";
 
 const getDateValue = (dateValue) => {
   if (!dateValue) return null;
-  if (dateValue instanceof Date) return dateValue;
+  if (dateValue instanceof Date) {
+    // guard against Invalid Date
+    if (isNaN(dateValue.getTime())) return null;
+    return dateValue;
+  }
   if (dateValue.toDate && typeof dateValue.toDate === "function")
     return dateValue.toDate();
   return null;
@@ -25,7 +29,10 @@ export default function Imports() {
   const [filteredImports, setFilteredImports] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [filterMonth, setFilterMonth] = useState("");
+  const [filterMonth, setFilterMonth] = useState(new Date().getMonth() + 1);
+  const [filterYear, setFilterYear] = useState(new Date().getFullYear());
+  const [yearError, setYearError] = useState("");
+  const [filterDate, setFilterDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   // ====================================================
@@ -53,14 +60,20 @@ export default function Imports() {
   useEffect(() => {
     let filtered = imports;
 
-    if (filterMonth) {
+    if (filterDate) {
       filtered = filtered.filter((imp) => {
         const date = getDateValue(imp.createdAt);
-        return date && format(date, "yyyy-MM") === filterMonth;
+        return date && format(date, "yyyy-MM-dd") === filterDate;
+      });
+    } else if (filterMonth && filterYear) {
+      const monthYear = `${filterYear}-${String(filterMonth).padStart(2, '0')}`;
+      filtered = filtered.filter((imp) => {
+        const date = getDateValue(imp.createdAt);
+        return date && format(date, "yyyy-MM") === monthYear;
       });
     }
     setFilteredImports(filtered);
-  }, [filterMonth, imports]);
+  }, [filterMonth, filterYear, filterDate, imports]);
 
   // ====================================================
   // 2. Logic Xử lý Modal & Actions
@@ -143,31 +156,63 @@ export default function Imports() {
       </h1>
 
       {/* Controls: Filters + Add Button */}
-      <div className={styles.importsControls}>
-        {/* ... (Phần Filter giữ nguyên) ... */}
+      <div className={styles.toolbar}>
         <div className={styles.filterGroup}>
           <div className={styles.filterItem}>
-            <label htmlFor="filter-month" className={styles.filterLabel}>
-              Tháng/Năm
-            </label>
+            <label>Tháng</label>
+            <select value={filterMonth} onChange={(e) => setFilterMonth(Number(e.target.value))}>
+              {Array.from({ length: 12 }).map((_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  Tháng {i + 1}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.filterItem}>
+            <label>Năm</label>
             <input
-              id="filter-month"
-              type="month"
-              value={filterMonth}
-              onChange={(e) => setFilterMonth(e.target.value)}
-              className={styles.filterInput}
+              type="number"
+              value={filterYear}
+              onChange={(e) => {
+                const raw = e.target.value;
+                const n = Number(raw);
+                if (!raw) {
+                  setFilterYear(0);
+                  setYearError("");
+                  return;
+                }
+                if (!/^[0-9]{1,4}$/.test(raw)) {
+                  setYearError("Năm không hợp lệ (tối đa 4 chữ số)");
+                  return;
+                }
+                if (n < 2000 || n > 2100) {
+                  setYearError("Năm phải trong khoảng 2000-2100");
+                  return;
+                }
+                setYearError("");
+                setFilterYear(n);
+              }}
+              min="2000"
+              max="2100"
             />
+            {yearError && <span className={styles.error}>{yearError}</span>}
+          </div>
+          <div className={styles.filterItem}>
+            <label>Ngày cụ thể</label>
+            <input type="date" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
           </div>
         </div>
 
-        <button
-          className={styles.importsAddBtn}
-          onClick={handleAdd}
-          disabled={loading}
-        >
-          <MdAdd size={20} />
-          <span>Thêm Phiếu Nhập</span>
-        </button>
+        <div className={styles.actionGroup}>
+          <button
+            className={styles.importsAddBtn}
+            onClick={handleAdd}
+            disabled={loading}
+          >
+            <MdAdd size={20} />
+            <span>Thêm Phiếu Nhập</span>
+          </button>
+        </div>
       </div>
 
       {/* List */}

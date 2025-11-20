@@ -1,0 +1,133 @@
+/* InvoiceDetail.module.css - Cải thiện: thêm shadow cho rows, màu accent cho total, responsive tốt hơn, đồng bộ với product/import */
+.container {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.headerItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.headerItem strong {
+  color: #1e293b;
+  font-size: 0.875rem;
+}
+
+.total {
+  font-weight: 600;
+  color: #3b82f6;
+  font-size: 1.125rem;
+}
+
+.items { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem; 
+  margin-bottom: 1rem;
+}
+
+.itemRow { 
+  display: flex; 
+  justify-content: space-between; 
+  gap: 1rem; 
+  padding: 1rem; 
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s;
+}
+
+.itemRow:hover {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.left {
+  flex: 1;
+}
+
+.name { 
+  font-weight: 600; 
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.meta { 
+  color: #64748b; 
+  font-size: 0.875rem; 
+}
+
+.right { 
+  text-align: right; 
+  min-width: 160px;
+  font-size: 0.875rem;
+  color: #475569;
+}
+
+.subtotal {
+  font-weight: 600;
+  color: #3b82f6;
+  margin-top: 0.25rem;
+}
+
+.note { 
+  margin-top: 1rem; 
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  color: #374151;
+  border-left: 3px solid #3b82f6;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btnPrint {
+  padding: 0.625rem 1.25rem;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.btnPrint:hover {
+  background: #2563eb;
+}
+
+@media (max-width: 600px) {
+  .header { 
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .itemRow { 
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+  }
+  
+  .right { 
+    text-align: left; 
+  }
+}

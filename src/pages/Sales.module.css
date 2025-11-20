@@ -1,9 +1,136 @@
+/* Sales.module.css - Đồng bộ với product/import: sử dụng màu xanh dương chính (#3b82f6), xám nhạt, bo góc 8px, shadow nhẹ, font sans-serif */
 .salesPage {
-  padding: 1rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  min-height: 100vh;
 }
+
+.header {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 0.75rem;
+}
+
+.header h1 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
 .toolbar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  align-items: flex-end;
+  gap: 1rem;
+  background: white;
+  padding: 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.filterGroup {
+  display: flex;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.filterItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 120px;
+}
+
+.filterItem label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.filterItem select,
+.filterItem input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.filterItem select:focus,
+.filterItem input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btnPrimary,
+.btnSecondary {
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btnPrimary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btnPrimary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btnSecondary {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.btnSecondary:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filterGroup {
+    justify-content: stretch;
+  }
+
+  .filterItem {
+    min-width: auto;
+    flex: 1;
+  }
+
+  .actionGroup {
+    justify-content: stretch;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    flex: 1;
+  }
 }

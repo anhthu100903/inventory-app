@@ -2,12 +2,38 @@
 import React from "react";
 import ImportItemRow from "./ImportItemRow/ImportItemRow";
 import { MdPlaylistAddCheck, MdAdd } from "react-icons/md";
-import { findProductsByName } from "../../services/productService";
+import { searchProductsByNameWithFallback, getAllCategories } from "../../services/productService";
+import { getAllCategories as fetchCategories } from "../../services/categoryService";
 import styles from "./ImportItemTable.module.css";
 
 export default function ImportItemTable({ fields, register, append, remove, setValue, errors, className = "" }) {
   const [searchResults, setSearchResults] = React.useState({});
   const [loadingIndex, setLoadingIndex] = React.useState(null);
+  const [categories, setCategories] = React.useState([]);
+
+  // Load categories for datalist suggestions
+  React.useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        // Try category service first
+        const cats = await fetchCategories();
+        if (!mounted) return;
+        setCategories(cats || []);
+      } catch (err) {
+        console.warn("Failed to load categories via categoryService, falling back to product service", err);
+        try {
+          const cats2 = await getAllCategories();
+          if (!mounted) return;
+          setCategories(cats2 || []);
+        } catch (e) {
+          console.error("Failed to load categories fallback:", e);
+        }
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, []);
 
   const handleSearchProduct = async (index, name) => {
     if (!name || name.length < 2) {
@@ -16,7 +42,7 @@ export default function ImportItemTable({ fields, register, append, remove, setV
     }
     setLoadingIndex(index);
     try {
-      const products = await findProductsByName(name);
+      const products = await searchProductsByNameWithFallback(name);
       setSearchResults((prev) => ({ ...prev, [index]: products }));
     } catch (error) {
       console.error("Search error:", error);
@@ -46,7 +72,7 @@ export default function ImportItemTable({ fields, register, append, remove, setV
 
       <div className={styles.itemsList}>
         {fields.map((field, index) => (
-          <div key={field.id} className={styles.rowSeparator}>
+          <div key={field.id || index} className={styles.rowSeparator}>
             <ImportItemRow
               index={index}
               register={register}
@@ -56,6 +82,7 @@ export default function ImportItemTable({ fields, register, append, remove, setV
               onSelectProduct={handleSelectProduct}
               loading={loadingIndex === index}
               errors={errors?.[index] || {}} // Pass per-row errors
+              categories={categories}
             />
           </div>
         ))}

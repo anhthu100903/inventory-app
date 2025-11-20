@@ -49,8 +49,32 @@ export const addImportRecord = async (importData) => {
     // 2️⃣ Serialize phiếu nhập trước khi lưu
     const dataToSave = imp.toFirestore(true); // tất cả field plain object + Date
 
+    // Helper: sanitize undefined -> null for Firestore compatibility
+    // Preserve Date and Firestore Timestamp-like objects (have toDate)
+    const sanitize = (val) => {
+      if (val === undefined) return null;
+      if (val === null) return null;
+      if (val instanceof Date) return val;
+      if (val && typeof val.toDate === "function") return val; // Firestore Timestamp
+      if (Array.isArray(val)) return val.map(sanitize);
+      if (typeof val === "object") {
+        const out = {};
+        for (const [k, v] of Object.entries(val)) {
+          out[k] = sanitize(v);
+        }
+        return out;
+      }
+      return val;
+    };
+
+    const cleaned = sanitize(dataToSave);
+    // Ensure supplier.id is not left undefined (Firestore rejects undefined)
+    if (cleaned && typeof cleaned.supplier === "object") {
+      cleaned.supplier.id = cleaned.supplier.id === undefined ? null : cleaned.supplier.id;
+    }
+
     // 3️⃣ Lưu phiếu nhập trước khi cập nhật tồn kho
-    const docRef = await addDoc(importsCollectionRef, dataToSave);
+    const docRef = await addDoc(importsCollectionRef, cleaned);
 
     // 4️⃣ Cập nhật tồn kho
     for (const item of imp.items) {
@@ -113,7 +137,29 @@ export const updateImportRecord = async (id, updateData) => {
 
     const dataToUpdate = imp.toFirestore(false);
     delete dataToUpdate.createdAt;
-    await updateDoc(docRef, dataToUpdate);
+
+    // sanitize undefined values before update, preserve Dates/Timestamps
+    const sanitize = (val) => {
+      if (val === undefined) return null;
+      if (val === null) return null;
+      if (val instanceof Date) return val;
+      if (val && typeof val.toDate === "function") return val;
+      if (Array.isArray(val)) return val.map(sanitize);
+      if (typeof val === "object") {
+        const out = {};
+        for (const [k, v] of Object.entries(val)) {
+          out[k] = sanitize(v);
+        }
+        return out;
+      }
+      return val;
+    };
+
+    const cleaned = sanitize(dataToUpdate);
+    if (cleaned && typeof cleaned.supplier === "object") {
+      cleaned.supplier.id = cleaned.supplier.id === undefined ? null : cleaned.supplier.id;
+    }
+    await updateDoc(docRef, cleaned);
     const snap = await getDoc(docRef);
     return mapDocToImport(snap);
   } catch (err) {

@@ -2,21 +2,55 @@
 import React from "react";
 import ImportItemRow from "../ImportItemRow/ImportItemRow";
 import { MdPlaylistAddCheck, MdAdd } from "react-icons/md";
-import { findProductsByName } from "../../../services/productService";
+import { searchProductsByNameWithFallback, getAllCategories } from "../../../services/productService";
+import { getAllCategories as fetchCategories } from "../../../services/categoryService";
 import styles from "./ImportItemTable.module.css";
 
 export default function ImportItemTable({ fields, register, append, remove, setValue, errors, className = "" }) {
   const [searchResults, setSearchResults] = React.useState({});
   const [loadingIndex, setLoadingIndex] = React.useState(null);
+  const [categories, setCategories] = React.useState([]);
+  const [selectedProducts, setSelectedProducts] = React.useState({});
+
+  // Load categories for datalist suggestions
+  React.useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        // Try category service first (returns Category objects)
+        const cats = await fetchCategories();
+        if (!mounted) return;
+        // Extract category names from Category objects
+        const categoryNames = (cats || []).map(c => 
+          typeof c === 'string' ? c : (c.name || '')
+        ).filter(name => name);
+        setCategories(categoryNames);
+      } catch (err) {
+        console.warn("Failed to load categories via categoryService, falling back to product service", err);
+        try {
+          const cats2 = await getAllCategories();
+          if (!mounted) return;
+          // productService.getAllCategories already returns strings
+          setCategories(cats2 || []);
+        } catch (e) {
+          console.error("Failed to load categories fallback:", e);
+        }
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, []);
 
   const handleSearchProduct = async (index, name) => {
+    // When user types, clear any previous DB selection for that row
+    setSelectedProducts((prev) => ({ ...prev, [index]: null }));
     if (!name || name.length < 2) {
       setSearchResults((prev) => ({ ...prev, [index]: [] }));
       return;
     }
     setLoadingIndex(index);
     try {
-      const products = await findProductsByName(name);
+      const products = await searchProductsByNameWithFallback(name);
       setSearchResults((prev) => ({ ...prev, [index]: products }));
     } catch (error) {
       console.error("Search error:", error);
@@ -31,7 +65,10 @@ export default function ImportItemTable({ fields, register, append, remove, setV
     setValue(`items.${index}.importPrice`, product.importPrice || 0);
     setValue(`items.${index}.profitPercent`, product.profitPercent || 10);
     setValue(`items.${index}.unit`, product.unit || "Cái");
+    setValue(`items.${index}.category`, ""); // Clear category khi chọn product đã tồn tại
+    setValue(`items.${index}.notes`, "");
     setSearchResults((prev) => ({ ...prev, [index]: [] }));
+    setSelectedProducts((prev) => ({ ...prev, [index]: product }));
   };
 
   return (
@@ -54,6 +91,8 @@ export default function ImportItemTable({ fields, register, append, remove, setV
               onSelectProduct={handleSelectProduct}
               loading={loadingIndex === index}
               errors={errors?.[index] || {}} // Pass per-row errors
+              categories={categories}
+              selected={selectedProducts[index] || null}
             />
           </div>
         ))}

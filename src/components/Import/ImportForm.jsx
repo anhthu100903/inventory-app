@@ -13,6 +13,7 @@ import {
 import Modal from "../Modal";
 import SupplierForm from "../Supplier/SupplierForm";
 import SupplierSelect from "./SupplierSelect";
+import { addSupplier as addSupplierService, updateSupplier as updateSupplierService } from "../../services/supplierService";
 import ImportItemTable from "./ImportItemTable";
 import styles from "./ImportForm.module.css";
 
@@ -31,7 +32,7 @@ export default function ImportForm({
     setValue,
   } = useForm({
     defaultValues: initialData || {
-      importDate: new Date().toISOString().slice(0, 7),
+      importDate: new Date().toISOString().slice(0, 10),
       note: "",
       items: [
         {
@@ -76,7 +77,16 @@ export default function ImportForm({
 
   React.useEffect(() => {
     if (initialData) {
-      reset(initialData);
+      // Normalize importDate to YYYY-MM-DD string for date input
+      const normalized = {
+        ...initialData,
+        importDate: initialData.importDate
+          ? (initialData.importDate instanceof Date
+              ? initialData.importDate.toISOString().slice(0, 10)
+              : new Date(initialData.importDate).toISOString().slice(0, 10))
+          : new Date().toISOString().slice(0, 10),
+      };
+      reset(normalized);
       setSelectedSupplier(initialData.supplier);
     }
   }, [initialData, reset]);
@@ -99,9 +109,21 @@ export default function ImportForm({
   };
 
   const handleSupplierSubmit = async (supplierData) => {
-    // Logic Firebase add/update supplier
-    setSelectedSupplier(supplierData);
-    setShowSupplierModal(false);
+    try {
+      // If editingSupplierId exists, update; otherwise add
+      let saved = null;
+      if (editingSupplierId) {
+        saved = await updateSupplierService(editingSupplierId, supplierData);
+      } else {
+        saved = await addSupplierService(supplierData);
+      }
+      setSelectedSupplier(saved);
+      setShowSupplierModal(false);
+      setEditingSupplierId(null);
+    } catch (err) {
+      console.error("Failed to add/update supplier:", err);
+      alert("Lỗi khi lưu nhà cung cấp: " + (err?.message || err));
+    }
   };
 
   const handleSupplierCancel = () => {

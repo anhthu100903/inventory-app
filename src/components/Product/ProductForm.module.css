@@ -54,6 +54,12 @@
   align-items: center;
 }
 
+.supplierWrapper {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 .categorySearch {
   flex: 1;
   position: relative;

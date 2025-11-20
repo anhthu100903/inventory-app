@@ -4,7 +4,7 @@ import { MdSearch, MdClose, MdBusiness, MdArrowDropDown, MdArrowDropUp, MdAdd } 
 import { getAllSuppliers } from "../../../services/supplierService"; // import từ service
 import styles from "./SupplierSelect.module.css";
 
-export default function SupplierSelect({ onSelect, error, className = "", onOpenSupplierModal, value = null }) {
+export default function SupplierSelect({ onSelect, error, className = "", onOpenSupplierModal, value = null, reloadKey = 0 }) {
   const [suppliers, setSuppliers] = useState([]);
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
@@ -24,7 +24,7 @@ export default function SupplierSelect({ onSelect, error, className = "", onOpen
       }
     };
     fetchSuppliers();
-  }, []);
+  }, [reloadKey]);
 
   useEffect(() => {
     // If a selected value is provided from parent, reflect its name in the input

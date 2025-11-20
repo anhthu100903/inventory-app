@@ -50,7 +50,7 @@ export const addSupplier = async (supplierData) => {
     const supplier = new Supplier(supplierData);
     const docRef = await addDoc(suppliersCollectionRef, supplier.toFirestore(true));
     // reload for server timestamp
-    const saved = await getDoc(doc(docRef.firestore, SUPPLIERS_COLLECTION, docRef.id));
+    const saved = await getDoc(doc(db, SUPPLIERS_COLLECTION, docRef.id));
     return mapDocToSupplier(saved);
   } catch (err) {
     console.error("addSupplier error:", err);

@@ -25,60 +25,65 @@
   font-size: 1.75rem;
 }
 
-.importsControls {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+.toolbar {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
   background: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 1.25rem;
   border-radius: 8px;
-  margin: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
 }
 
 .filterGroup {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 0.5rem;
-  background: #f1f5f9;
-  border-radius: 8px;
+  gap: 1rem;
+  align-items: end;
+  flex-wrap: wrap;
 }
 
 .filterItem {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.9rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 120px;
 }
 
-.filterIcon {
+.filterItem label {
+  font-size: 0.875rem;
   color: #64748b;
-  flex-shrink: 0;
-}
-
-.filterLabel {
   font-weight: 500;
-  color: #374151;
-  min-width: 60px; /* Align labels */
 }
 
-.filterInput {
-  flex: 1;
-  padding: 0.5rem;
+.filterItem select,
+.filterItem input {
+  padding: 0.5rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 6px;
-  font-size: 0.9rem;
   background: white;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
 }
 
-.filterInput:focus {
+.filterItem select:focus,
+.filterItem input:focus {
   outline: none;
   border-color: #3b82f6;
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.actionGroup {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 .importsAddBtn {
@@ -266,9 +271,9 @@
     margin: 1.5rem 0 1rem;
   }
 
-  .importsControls {
+  .toolbar {
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     margin: 0 0 2rem;
     padding: 1.5rem;
@@ -277,18 +282,21 @@
   }
 
   .filterGroup {
-    flex-direction: row;
     flex: 1;
-    gap: 2rem;
+    justify-content: stretch;
   }
 
   .filterItem {
+    min-width: auto;
     flex: 1;
   }
 
+  .actionGroup {
+    justify-content: stretch;
+  }
+
   .importsAddBtn {
-    width: auto;
-    order: 3; /* Push button right */
+    flex: 1;
   }
 
   .importsList {
@@ -303,7 +311,9 @@
 }
 
 @media (max-width: 480px) {
-  .importsControls {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
     padding: 0.75rem;
     margin: 0 0.5rem;
   }

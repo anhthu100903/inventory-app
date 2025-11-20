@@ -1,5 +1,5 @@
 // components/Import/ImportItemRow.jsx
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ImportItemRow.module.css";
 import { MdDelete, MdSearch, MdCheckBox } from "react-icons/md";
 
@@ -12,12 +12,26 @@ export default function ImportItemRow({
   searchResults = [],
   loading,
   errors = {},
+  categories = [],
+  selected = null,
 }) {
+  const [categorySearch, setCategorySearch] = useState("");
+  const [typedProductName, setTypedProductName] = useState("");
+
   const handleDelete = () => {
     if (window.confirm("Xóa sản phẩm này?")) {
       remove(index);
     }
   };
+
+  // Filter categories based on search input
+  const filteredCategories = Array.isArray(categories)
+    ? categories.filter((c) => {
+        // Ensure c is a string before calling toLowerCase
+        const categoryName = typeof c === 'string' ? c : (c?.name || '');
+        return categoryName.toLowerCase().includes(categorySearch.toLowerCase());
+      })
+    : [];
 
   return (
     <div className={styles.itemRowCard}>
@@ -27,7 +41,7 @@ export default function ImportItemRow({
           <MdSearch className={styles.labelIcon} />
           Tên sản phẩm <span className={styles.required}>*</span>
         </label>
-        <div className={styles.inputWrapper}>
+          <div className={styles.inputWrapper}>
           <input
             type="text"
             {...register(`items.${index}.productName`, { 
@@ -36,9 +50,21 @@ export default function ImportItemRow({
             })}
             className={`${styles.searchInput} ${errors.productName ? styles.errorInput : ""}`}
             placeholder="Nhập tên sản phẩm để tìm..."
-            onChange={(e) => onSearchProduct(index, e.target.value)}
+            onChange={(e) => {
+              const v = e.target.value;
+              setTypedProductName(v);
+              onSearchProduct(index, v);
+            }}
           />
           <input type="hidden" {...register(`items.${index}.productId`)} />
+          {/* Status: existing or new */}
+          <div className={styles.productStatus}>
+            {selected ? (
+              <span className={styles.existing}>Sản phẩm có sẵn</span>
+            ) : typedProductName ? (
+              <span className={styles.new}>Sản phẩm mới (chưa lưu)</span>
+            ) : null}
+          </div>
           {loading ? (
             <div className={styles.dropdown}>
               <div className={styles.spinner}></div>
@@ -135,10 +161,18 @@ export default function ImportItemRow({
           </label>
           <input 
             type="text" 
+            value={categorySearch}
+            onChange={(e) => setCategorySearch(e.target.value)}
+            list={`category-list-${index}`}
             {...register(`items.${index}.category`)} 
             className={`${styles.textInput} ${errors.category ? styles.errorInput : ""}`}
-            placeholder="Không có nếu sản phẩm đã tồn tại"
+            placeholder="Tìm hoặc nhập phân loại..."
           />
+          <datalist id={`category-list-${index}`}>
+            {filteredCategories.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
           {errors.category && <p className={styles.errorMsg}>{errors.category.message}</p>}
         </div>
         <div className={styles.fieldWrapper}>

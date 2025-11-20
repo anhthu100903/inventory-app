@@ -124,6 +124,7 @@ export default function ImportList({ imports: propsImports, onEdit, onDelete }) 
           <table className={styles.table}>
             <thead>
               <tr>
+                <th>STT</th>
                 <th>Ngày</th>
                 <th className={styles.supplierHideOnMobile}>Nhà cung cấp</th>
                 <th>Sản phẩm</th>
@@ -133,7 +134,7 @@ export default function ImportList({ imports: propsImports, onEdit, onDelete }) 
               </tr>
             </thead>
             <tbody>
-              {localImports.map((imp) => {
+              {localImports.map((imp, index) => {
                 const isShown = showDropdownId == imp.id && dropdownPos;
                 let portal = null;
                 if (isShown) {
@@ -158,6 +159,7 @@ export default function ImportList({ imports: propsImports, onEdit, onDelete }) 
 
                 return (
                   <tr key={imp.id}>
+                    <td>{index + 1}</td>
                     <td>{imp.importDate ? new Date(imp.importDate).toLocaleDateString() : "-"}</td>
                     <td className={styles.supplierHideOnMobile}>{imp.supplier?.name || "-"}</td>
                     <td>{imp.items?.length || 0}</td>
