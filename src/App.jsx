@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 
 import Suppliers from '@features/Supplier/page/Suppliers.jsx';
-import Products from '@features/Product/page/product.jsx';
+import Products from '@features/Product/page/Product.jsx';
 import Categories from '@features/Category/page/Categories.jsx';
 import Sales from '@features/Sales/page/Sales.jsx';
 import Dashboard from '@features/Dashboard/page/Dashboard.jsx';
