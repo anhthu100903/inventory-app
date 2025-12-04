@@ -1,7 +1,7 @@
 import { db } from "../firebaseConfig";
 import { collection, addDoc, getDocs, query, where, orderBy, doc, updateDoc, onSnapshot, getDoc, deleteDoc } from "firebase/firestore";
-import { Invoice } from "../models/Invoice";
-import { getProductById, updateProduct } from "./productService";
+import { Invoice } from "@models/Invoice";
+import { getProductById, updateProduct } from "@services/productService";
 import * as XLSX from "xlsx";
 
 const SALES_COLLECTION = "sales";

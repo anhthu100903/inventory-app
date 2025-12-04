@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 
-import Suppliers from "./pages/Supplier/Suppliers";
-import Products from "./pages/Products";
-import Categories from "./pages/Categories";
-import Sales from "./pages/Sales";
-import Dashboard from "./pages/Dashboard";
-import Imports from "./pages/Import.jsx/Imports";
+import Suppliers from './features/Supplier/page/Suppliers.jsx';
+import Products from './features/Product/page/product.jsx';
+import Categories from './features/Category/page/Categories.jsx';
+import Sales from './features/Sales/page/Sales.jsx';
+import Dashboard from './features/Dashboard/page/Dashboard.jsx';
+import Imports from './features/Import/page/Imports.jsx';
 
 function App() {
   return (

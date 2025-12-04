@@ -12,7 +12,7 @@ import {
   where,
   orderBy,
 } from "firebase/firestore";
-import { Supplier } from "../models/Supplier";
+import { Supplier } from "@models/Supplier";
 
 const SUPPLIERS_COLLECTION = "suppliers";
 const suppliersCollectionRef = collection(db, SUPPLIERS_COLLECTION);

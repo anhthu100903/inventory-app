@@ -1,6 +1,6 @@
 import { db } from "../firebaseConfig";
 import { collection, getDocs, addDoc, updateDoc, doc, query, where, limit, getDoc, orderBy, startAt, endAt } from "firebase/firestore";
-import { Product } from "../models/Product";
+import { Product } from "@models/Product";
 
 const PRODUCTS_COLLECTION = "products";
 const productsCollectionRef = collection(db, PRODUCTS_COLLECTION);
